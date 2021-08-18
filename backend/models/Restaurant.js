@@ -20,12 +20,10 @@ const restaurantSchema = new mongoose.Schema({
 		maxlength: 100,
 		required: true,
 	},
-	reviews: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'Review'
-		}
-	]
+	owner: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User'
+	}
 })
 
 restaurantSchema.set('toJSON', {
