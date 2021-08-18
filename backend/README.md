@@ -22,3 +22,4 @@ todo:
 - .env existence validation
 - pagination
 - ts migration
+- swager docs?
