@@ -21,8 +21,6 @@ authRouter.post('/login', async (request, response) => {
 	response
 		.status(200)
 		.send({
-			id: user.id,
-			username: user.username,
 			token: tokenizedUser,
 		})
 })
