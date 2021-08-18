@@ -4,37 +4,48 @@ const Review = require('../models/Review')
 const User = require('../models/User')
 
 restaurantsRouter.get('/', async (req, res) => {
-	const blogs = await Restaurant.find({})
-	return res.json(blogs)
+	try {
+		const restaurants = await Restaurant.find({})
+		return res.json(restaurants)
+	}
+	catch(error) {
+		return res.status(400).json({ error: error.message })
+	}
 })
 
 restaurantsRouter.get('/:id', async (req, res) => {
-	const restaurantId = req.params.id
-	const restaurant = await Restaurant.findById(restaurantId)
-	return restaurant ? res.json(restaurant) : res.status(404).end()
+	try {
+		const restaurantId = req.params.id
+		const restaurant = await Restaurant.findById(restaurantId)
+		return restaurant ? res.json(restaurant) : res.sendStatus(403)
+	}
+	catch(error) {
+		return res.status(400).json({ error: error.message })
+	}
 })
 
 restaurantsRouter.post('/', async (req, res) => {
 	try {
-		if (!req.user) return res.status(401).json({ error: 'Missing auth information.'})
+		if (!req.user) return res.sendStatus(401)
 		const user = await User.findById(req.user.id)
-		if(user.role !== 'owner') return res.status(403).json({ error: 'Not allowed operation.'})
+		if(user.role !== 'owner') return res.sendStatus(403)
 		const newRestaurant = new Restaurant({
 			name: req.body.name,
 			address: req.body.address,
-			addressurl: req.body.url,
-			reviews: []
+			url: req.body.url,
+			owner: req.user.id
 		})
 		const savedRestaurant = await newRestaurant.save()
 		return res.status(201).json(savedRestaurant)
 	}
 	catch(error) {
-		return res.status(400).json({ error: error.message })		
+		return res.status(400).json({ error: error.message })
 	}
 })
 
 restaurantsRouter.post('/:id/review', async (req, res) => {
 	try {
+		if (!req.user) return res.sendStatus(401)
 		const restaurantId = req.params.id
 		const restaurant = await Restaurant.findById(restaurantId)
 		if (restaurant === null) return res.status(400).json({error: `No restaurant with id: \'${restaurantId}\' found.`})
@@ -43,11 +54,11 @@ restaurantsRouter.post('/:id/review', async (req, res) => {
 			comment: req.body.comment,
 			stars: req.body.stars,
 			restaurant: restaurantId,
-			user: req.user.id,
+			user: req.user.id
 		})
 	
 		const savedReviewId = await newReview.save()
-		const savedReview = await Review.findById(savedReviewId).populate('user', { reviews: 0 })
+		const savedReview = await Review.findById(savedReviewId)
 		return res.status(200).json(savedReview)
 	}
 	catch(error){
