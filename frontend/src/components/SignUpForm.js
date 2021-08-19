@@ -14,7 +14,7 @@ import {
 	CssBaseline,
 } from './UIComponents'
 import Toast from './Toast'
-import Spinner from './Spinner'
+import BackDropSpinner from './BackDropSpinner'
 import SignFormCopyright from './SignFormCopyright'
 
 const useStyles = makeStyles((theme) => ({
@@ -56,7 +56,7 @@ const _signUp = async (email, username, password, setSuccesfulSignUp, setShowFai
 		setSuccesfulSignUp(true)
 		setShowFailedSignUpToast(false)
 	}
-	catch (exception) {
+	catch (error) {
 		setSuccesfulSignUp(false)
 		setShowFailedSignUpToast(true)
 	}
@@ -98,9 +98,12 @@ const SignUpForm = () => {
 		setPassword('')
 	}
 
+	// ToDo: add proper fields validation
 	return (
 		<Grid container component="main" className={classes.root}>
 			<CssBaseline />
+			<BackDropSpinner open={loading}/>
+			<Toast open={showFailedSignUpToast} handleClose={() => {setShowFailedSignUpToast(false)}} severity="error" message="Error signing up. Please try again."></Toast>
 			<Grid item xs={false} sm={4} md={7} className={classes.image} />
 			<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
 				<div className={classes.paper}>
@@ -166,14 +169,6 @@ const SignUpForm = () => {
 						>
 							Sign Up
 						</Button>
-						<Grid container>
-							<Grid item>
-								{loading && <Spinner />}
-							</Grid>
-							<Grid item>
-								<Toast open={showFailedSignUpToast} handleClose={() => {setShowFailedSignUpToast(false)}} severity="error" message="Error signing up. Please try again."></Toast>
-							</Grid>
-						</Grid>
 						<Box mt={5}>
 							<SignFormCopyright />
 						</Box>

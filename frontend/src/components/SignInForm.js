@@ -15,7 +15,7 @@ import {
 	CssBaseline,
 } from './UIComponents'
 import Toast from './Toast'
-import Spinner from './Spinner'
+import BackDropSpinner from './BackDropSpinner'
 import SignFormCopyright from './SignFormCopyright'
 
 const useStyles = makeStyles((theme) => ({
@@ -95,9 +95,12 @@ const SignInForm = () => {
 		setPassword('')
 	}
 
+	// ToDo: add proper fields validation
 	return (
 		<Grid container component="main" className={classes.root}>
 			<CssBaseline />
+			<Toast open={showFailedSignInToast} handleClose={() => { setShowFailedSignInToast(false) }} severity="error" message="Wrong credentials. Please try again."></Toast>
+			<BackDropSpinner open={loading} />
 			<Grid item xs={false} sm={4} md={7} className={classes.image} />
 			<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
 				<div className={classes.paper}>
@@ -157,12 +160,6 @@ const SignInForm = () => {
 								<Link variant="body2" onClick={() => { history.push('/signup') }}>
 									{"Don't have an account yet? Sign Up"}
 								</Link>
-							</Grid>
-							<Grid item>
-								{loading && <Spinner />}
-							</Grid>
-							<Grid item>
-								<Toast open={showFailedSignInToast} handleClose={() => { setShowFailedSignInToast(false) }} severity="error" message="Wrong credentials. Please try again."></Toast>
 							</Grid>
 						</Grid>
 						<Box mt={5}>
