@@ -8,22 +8,27 @@ usersRouter.get('/', async (request, response) => {
 })
 
 usersRouter.post('/', async (request, response) => {
-	const body = request.body
-	if (body.password === undefined || body.password.length < 3)
-		return response.status(400).json({ error: '`password` field must be defined and must be greather than 3 chars. length.' })
-
-	const saltRounds = 5
-	const passwordHash = await bcrypt.hash(body.password, saltRounds)
-
-	const user = new User({
-		username: body.username,
-		email: body.email,
-		name: body.name,
-		passwordHash,
-	})
-
-	const savedUser = await user.save()
-	response.json(savedUser)
+	try {
+		const body = request.body
+		if (body.password === undefined || body.password.length < 3)
+			return response.status(400).json({ error: '`password` field must be defined and must be greather than 3 chars. length.' })
+	
+		const saltRounds = 5
+		const passwordHash = await bcrypt.hash(body.password, saltRounds)
+	
+		const user = new User({
+			username: body.username,
+			email: body.email,
+			name: body.name,
+			passwordHash,
+		})
+	
+		const savedUser = await user.save()
+		response.json(savedUser)
+	}
+	catch(error) {
+		return res.status(400).json({ error: error.message })
+	}
 })
 
 module.exports = usersRouter
