@@ -10,10 +10,15 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 
 export {
     Avatar,
+    Snackbar,
+    MuiAlert,
     Button,
     CssBaseline,
     TextField,
@@ -24,6 +29,7 @@ export {
     Box,
     Grid,
     LockOutlinedIcon,
+    CircularProgress,
     Typography,
     makeStyles
 }

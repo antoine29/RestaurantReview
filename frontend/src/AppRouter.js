@@ -1,6 +1,7 @@
 import React from 'react'
 import { Switch, Route, BrowserRouter as Router, Redirect } from 'react-router-dom'
-import {SignInForm, SignUpForm} from "./components/SignForms"
+import SignInForm from './components/SignInForm'
+import SignUpForm from './components/SignUpForm'
 
 const AppRouter = () => {
   return(
