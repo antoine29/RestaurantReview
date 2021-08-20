@@ -29,13 +29,11 @@ const SimpleBackDropDialog = ({text, buttonText}) => {
         <DialogContent>
           <DialogContentText>
             {text}
-            {/* New account succesfuly created. Please sign in to start using the application. */}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">
             {buttonText}
-            {/* Ok */}
           </Button>
         </DialogActions>
       </Dialog>

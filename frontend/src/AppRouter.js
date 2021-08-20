@@ -4,6 +4,7 @@ import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
 
 const AppRouter = () => {
+  // ToDo: default route for unsigned users should be signin
   return(
     <Router>
       <Switch>
