@@ -27,7 +27,7 @@ usersRouter.post('/', async (request, response) => {
 		response.json(savedUser)
 	}
 	catch(error) {
-		return res.status(400).json({ error: error.message })
+		return response.status(400).json({ error: error.message })
 	}
 })
 
