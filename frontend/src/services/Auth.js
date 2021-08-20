@@ -12,3 +12,8 @@ export const SignUp = async user => {
   const response = await axios.post(`${baseUrl}/api/users`, user)
   return response.data
 }
+
+export const SignOut = (history) => {
+  window.localStorage.clear()
+  history.push('/signin')
+}
