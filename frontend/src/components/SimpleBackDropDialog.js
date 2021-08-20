@@ -7,11 +7,9 @@ import {
     DialogContentText,
     DialogTitle
 } from './UIComponents'
-import { useTheme } from '@material-ui/core/styles'
 
 const SimpleBackDropDialog = ({text, buttonText}) => {
   const [open, setOpen] = React.useState(true)
-  const theme = useTheme()
 
   const handleClose = () => {
     setOpen(false)

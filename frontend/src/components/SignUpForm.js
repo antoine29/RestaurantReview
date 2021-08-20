@@ -16,7 +16,7 @@ import {
 import Toast from './Toast'
 import BackDropSpinner from './BackDropSpinner'
 import SimpleBackDropDialog from './SimpleBackDropDialog'
-import SignFormCopyright from './SignFormCopyright'
+import CopyrightLabel from './CopyrightLabel'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -168,7 +168,7 @@ const SignUpForm = () => {
 							Sign Up
 						</Button>
 						<Box mt={5}>
-							<SignFormCopyright />
+							<CopyrightLabel />
 						</Box>
 					</form>
 				</div>

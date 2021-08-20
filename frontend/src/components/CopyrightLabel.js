@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import {
   Link,
   Typography
 } from './UIComponents'
 
-const CopyRight = () => {
+const CopyRightLabel = () => {
     return (
       <Typography variant="body2" color="textSecondary" align="center">
         {'Copyright © '}
@@ -17,4 +17,4 @@ const CopyRight = () => {
     );
   }
 
-export default CopyRight
+export default CopyRightLabel

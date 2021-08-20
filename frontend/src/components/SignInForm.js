@@ -16,7 +16,7 @@ import {
 } from './UIComponents'
 import Toast from './Toast'
 import BackDropSpinner from './BackDropSpinner'
-import SignFormCopyright from './SignFormCopyright'
+import CopyrightLabel from './CopyrightLabel'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -163,7 +163,7 @@ const SignInForm = () => {
 							</Grid>
 						</Grid>
 						<Box mt={5}>
-							<SignFormCopyright />
+							<CopyrightLabel />
 						</Box>
 					</form>
 				</div>
