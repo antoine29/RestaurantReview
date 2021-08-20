@@ -100,7 +100,7 @@ const SignUpForm = () => {
 		<Grid container component="main" className={classes.root}>
 			<CssBaseline />
 			<BackDropSpinner open={loading}/>
-			{succesfulSignUp && <SimpleBackDropDialog text="New account succesfuly created. Please sign in to start using the application." buttonText="Ok"/>}
+			{succesfulSignUp && <SimpleBackDropDialog text="New account succesfuly created. Please sign in to start using the application." buttonText="Ok" history={history}/>}
 			<Toast open={showFailedSignUpToast} handleClose={() => {setShowFailedSignUpToast(false)}} severity="error" message="Error signing up. Please try again."></Toast>
 			<Grid item xs={false} sm={4} md={7} className={classes.image} />
 			<Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>

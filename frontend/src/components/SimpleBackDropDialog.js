@@ -8,11 +8,12 @@ import {
     DialogTitle
 } from './UIComponents'
 
-const SimpleBackDropDialog = ({text, buttonText}) => {
+const SimpleBackDropDialog = ({text, buttonText, history}) => {
   const [open, setOpen] = React.useState(true)
 
   const handleClose = () => {
     setOpen(false)
+    history.push('/signin')
   }
 
   return (
