@@ -66,7 +66,7 @@ const _signIn = async (email, password, setSuccesfulSigIn, setShowFailedSignInTo
 }
 
 const SignInForm = () => {
-	const classes = useStyles();
+	const classes = useStyles()
 	const history = useHistory()
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
