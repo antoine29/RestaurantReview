@@ -5,7 +5,6 @@ const app = express()
 const cors = require('cors')
 const restaurantRouter = require('./controllers/restaurants')
 const usersRouter = require('./controllers/users')
-const reviewsRouter = require('./controllers/reviews')
 const authRouter = require('./controllers/auth')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
@@ -36,7 +35,6 @@ app.get('/info', async (req, res) => {
 
 app.use('/api/users', usersRouter)
 app.use('/api/restaurants', restaurantRouter)
-app.use('/api/reviews', reviewsRouter)
 app.use('/auth', authRouter)
 app.use(middleware.unknownEndpoint)
 
