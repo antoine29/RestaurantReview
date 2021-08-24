@@ -16,3 +16,11 @@ export const GetRestaurantReviews = async (id) => {
   const response = await axios.get(`${baseUrl}/api/restaurants/${id}/reviews`)
   return response.data
 }
+
+export const CreateRestaurantReview = async (id, comment, stars, token) => {
+  const _headers = {
+    headers: { Authorization: `bearer ${token}` },
+  }
+  const response = await axios.post(`${baseUrl}/api/restaurants/${id}/reviews`, {comment, stars}, _headers)
+  return response.data
+}
