@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { SignIn } from '../../services/Auth'
+import { SetStoredUser, GetStoredUser } from '../../services/Auth'
 import {
 	Avatar,
 	Button,
@@ -53,7 +54,7 @@ const _signIn = async (email, password, setSuccesfulSigIn, setShowFailedSignInTo
 	console.log("SingIn: ", email, password)
 	try {
 		const user = await SignIn({ email, password })
-		window.localStorage.setItem('RRUserToken', JSON.stringify(user))
+		SetStoredUser(user)
 		console.log('Signed user:', user)
 		setSuccesfulSigIn(true)
 		setShowFailedSignInToast(false)
@@ -74,9 +75,9 @@ const SignInForm = () => {
 	const [succesfulSignIn, setSuccesfulSigIn] = useState(false)
 	const [showFailedSignInToast, setShowFailedSignInToast] = useState(false)
 
-	useEffect(() => {
-		const storedUserToken = window.localStorage.getItem('RRUserToken')
-		if (storedUserToken) {
+	useEffect(() => {	
+		const storedUserToken = GetStoredUser()
+		if (!!storedUserToken) {
 			console.log("Already signed user")
 			history.push('/')
 		}

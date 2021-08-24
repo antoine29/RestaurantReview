@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import {SignUp} from '../../services/Auth'
+import { GetStoredUser } from '../../services/Auth'
 import {
 	Avatar,
 	Button,
@@ -74,8 +75,8 @@ const SignUpForm = () => {
 	const [showFailedSignUpToast, setShowFailedSignUpToast] = useState(false)
 
 	useEffect(() => {
-		const storedUserToken = window.localStorage.getItem('RRUserToken')
-		if (storedUserToken) {
+		const storedUserToken = GetStoredUser()
+		if (!!storedUserToken) {
 			console.log("Already signed user")
 			history.push('/')
 		}
