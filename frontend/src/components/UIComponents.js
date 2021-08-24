@@ -54,6 +54,8 @@ import RestaurantIcon from '@material-ui/icons/Restaurant'
 import AnnouncementIcon from '@material-ui/icons/Announcement'
 import RateReviewIcon from '@material-ui/icons/RateReview'
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
+import Rating from '@material-ui/lab/Rating';
+import RoomIcon from '@material-ui/icons/Room';
 
 export {
     Avatar,
@@ -112,5 +114,7 @@ export {
     AnnouncementIcon,
     RateReviewIcon,
     deepOrange,
-    deepPurple
+    deepPurple,
+    Rating,
+    RoomIcon
 }
