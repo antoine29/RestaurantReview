@@ -14,6 +14,11 @@ export const SignUp = async user => {
   return response.data
 }
 
+export const GetUser = async user => {
+  const response = await axios.get(`${baseUrl}/api/users/${user.id}`)
+  return response.data
+}
+
 export const SignOut = (history) => {
   window.localStorage.clear()
   history.push('/signin')
