@@ -1,8 +1,10 @@
 import React from 'react'
 import { Switch, Route, BrowserRouter as Router, Redirect } from 'react-router-dom'
-import SignInForm from './components/SignInForm'
-import SignUpForm from './components/SignUpForm'
-import Home from './components/Home/Home'
+import SignInForm from './components/SignForms/SignInForm'
+import SignUpForm from './components/SignForms/SignUpForm'
+import MainLayout from './components/Layout/MainLayout'
+import Restaurant from './components/Restaurants/Restaurant'
+import Restaurants from './components/Restaurants/Restaurants'
 
 const AppRouter = () => {
   // ToDo:
@@ -17,11 +19,14 @@ const AppRouter = () => {
         <Route path='/signup'>
           <SignUpForm />
         </Route>
+        <Route path='/restaurants/:id'>
+          <MainLayout component={Restaurant}/>
+        </Route>
         <Route path='/restaurants'>
-          <div>restaurants</div>
+          <MainLayout component={Restaurants}/>
         </Route>
         <Route path='/'>
-          <Home />
+          <MainLayout component={Restaurants}/>
         </Route>
         {/* ToDo: enhance this unknow/default route handling */}
         <Route>
