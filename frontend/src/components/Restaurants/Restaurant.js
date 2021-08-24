@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { GetRestaurant, GetRestaurantReviews } from '../../services/Restaurants';
 import { useRouteMatch } from 'react-router-dom'
+import { GetRestaurant, GetRestaurantReviews, CreateRestaurantReview } from '../../services/Restaurants';
+import { GetStoredUser } from '../../services/Auth';
 import {
     makeStyles,
-    CssBaseline,
-    Grid,
-    Container
+    Button,
+    Icon
 } from '../UIComponents'
 
-// import MainFeaturedPost from './MainFeaturedPost';
 import RestaurantCard from './RestaurantCard';
 import RestaurantReviewCard from './RestaurantReviewCard';
+import AddReviewDialog from './AddReviewDialog';
 
 const useStyles = makeStyles((theme) => ({
     mainGrid: {
@@ -18,8 +18,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
+const _addReview = async (restaurantId, comment, stars) => {
+    const storedUser = GetStoredUser()
+    const createdReview = await CreateRestaurantReview(restaurantId, comment, stars, storedUser.token)
+    return createdReview
+}
+
 const Restaurant = ({ id }) => {
     const classes = useStyles();
+    const [openAddReview, setOpenAddReview] = useState(false)
     const userMatcher = useRouteMatch('/restaurants/:id')
     const [restaurant, setRestaurant] = useState(null)
     const [restaurantReviews, setRestaurantReviews] = useState(null)
@@ -39,7 +46,24 @@ const Restaurant = ({ id }) => {
     if(!!restaurant && !! restaurantReviews){
         return (
             <>
+            <AddReviewDialog
+                openAddReview={openAddReview}
+                setOpenAddReview={setOpenAddReview}
+                addReview={async (comment, stars)=>{
+                    const createdReview = await _addReview(userMatcher.params.id, comment, stars)
+                    setRestaurantReviews([...restaurantReviews, createdReview])
+                }}
+                />
             <RestaurantCard restaurant={restaurant}/>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              endIcon={<Icon>send</Icon>}
+              onClick={() => {setOpenAddReview(true)}}
+            >
+              Add review
+            </Button>
             {restaurantReviews.map(review => <RestaurantReviewCard review={review}/>)}
             </>
         )

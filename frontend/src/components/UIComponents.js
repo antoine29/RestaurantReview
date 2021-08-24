@@ -56,6 +56,7 @@ import RateReviewIcon from '@material-ui/icons/RateReview'
 import { deepOrange, deepPurple } from '@material-ui/core/colors';
 import Rating from '@material-ui/lab/Rating';
 import RoomIcon from '@material-ui/icons/Room';
+import Icon from '@material-ui/core/Icon';
 
 export {
     Avatar,
@@ -116,5 +117,6 @@ export {
     deepOrange,
     deepPurple,
     Rating,
-    RoomIcon
+    RoomIcon,
+    Icon
 }
