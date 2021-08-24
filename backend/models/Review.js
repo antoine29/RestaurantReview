@@ -19,8 +19,8 @@ const reviewSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
 	},
-	// ToDo:add review date 
-})
+},
+{ timestamps: true })
 
 reviewSchema.set('toJSON', {
 	transform: (document, returnedObject) => {
