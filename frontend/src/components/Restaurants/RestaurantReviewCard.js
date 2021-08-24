@@ -50,7 +50,7 @@ const RestaurantReviewCard = ({review}) => {
                 @{review.user.username}:
               </Typography>
               <Typography variant="subtitle1" color="textSecondary">
-                {!!review.date ? review.date : "stuB date"}
+                {review.createdAt}
               </Typography>
               <Typography variant="subtitle1" paragraph>
                 {review.comment}
