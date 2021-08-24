@@ -1,11 +1,16 @@
 const restaurantsRouter = require('express').Router()
-const Restaurant = require('../models/Restaurant')
-const Review = require('../models/Review')
-const User = require('../models/User')
+const { GetUser } = require('../dao/users')
+const {
+	GetRestaurants,
+    GetRestaurant,
+    CreateRestaurant,
+    CreateRestaurantReview,
+	GetRestaurantReviews
+} = require('../dao/restaurants')
 
 restaurantsRouter.get('/', async (req, res) => {
 	try {
-		const restaurants = await Restaurant.find({})
+		const restaurants = await GetRestaurants()
 		return res.json(restaurants)
 	}
 	catch(error) {
@@ -16,8 +21,20 @@ restaurantsRouter.get('/', async (req, res) => {
 restaurantsRouter.get('/:id', async (req, res) => {
 	try {
 		const restaurantId = req.params.id
-		const restaurant = await Restaurant.findById(restaurantId)
-		return restaurant ? res.json(restaurant) : res.sendStatus(403)
+		const restaurant = await GetRestaurant(restaurantId)
+		if(!restaurant) res.status(404).json({ error: `Restaurant ${restaurantId} not found.`})
+		return restaurant ? res.json(restaurant) : res.sendStatus(402)
+	}
+	catch(error) {
+		return res.status(400).json({ error: error.message })
+	}
+})
+
+restaurantsRouter.get('/:id/reviews', async (req, res) => {
+	try {
+		const restaurantId = req.params.id
+		const reviews = await GetRestaurantReviews(restaurantId)
+		return res.status(200).json(reviews)
 	}
 	catch(error) {
 		return res.status(400).json({ error: error.message })
@@ -27,19 +44,19 @@ restaurantsRouter.get('/:id', async (req, res) => {
 restaurantsRouter.post('/', async (req, res) => {
 	try {
 		if (!req.user) return res.sendStatus(401)
-		const user = await User.findById(req.user.id)
-		if(user.role !== 'owner') return res.sendStatus(403)
-		const newRestaurant = new Restaurant({
+		const user = await GetUser(req.user.id)
+		if(user.role !== 'owner') return res.status(403).json({error: 'Owner role restricted operation.'})
+		const newRestaurant = {
 			name: req.body.name,
 			address: req.body.address,
 			url: req.body.url,
 			owner: req.user.id
-		})
-		const savedRestaurant = await newRestaurant.save()
+		}
+		const savedRestaurant = await CreateRestaurant(newRestaurant)
 		return res.status(201).json(savedRestaurant)
 	}
 	catch(error) {
-		return res.status(400).json({ error: error.message })
+		return res.status(400).json(error)
 	}
 })
 
@@ -47,18 +64,14 @@ restaurantsRouter.post('/:id/review', async (req, res) => {
 	try {
 		if (!req.user) return res.sendStatus(401)
 		const restaurantId = req.params.id
-		const restaurant = await Restaurant.findById(restaurantId)
+		const restaurant = await GetRestaurant(restaurantId)
 		if (restaurant === null) return res.status(400).json({error: `No restaurant with id: \'${restaurantId}\' found.`})
 		
-		const newReview = new Review({
+		const newReview = {
 			comment: req.body.comment,
 			stars: req.body.stars,
-			restaurant: restaurantId,
-			user: req.user.id
-		})
-	
-		const savedReviewId = await newReview.save()
-		const savedReview = await Review.findById(savedReviewId)
+		}
+		const savedReview = await CreateRestaurantReview(newReview, restaurant, req.user)
 		return res.status(200).json(savedReview)
 	}
 	catch(error){
