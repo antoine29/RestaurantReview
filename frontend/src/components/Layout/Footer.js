@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// ToDo: make this footer sticky at button
 export default function Footer() {
   const classes = useStyles()
 
