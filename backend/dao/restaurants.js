@@ -36,7 +36,8 @@ const CreateRestaurantReview = async (review, restaurant, user) => {
 	})
 	
 	const savedReview = await newReview.save()
-	return savedReview
+	const populatedReview = await Review.findById(savedReview.id).populate('user', {reviews: 0, role: 0})
+	return populatedReview
 }
 
 // ToDo: make this 'agregated' field part of the model?
