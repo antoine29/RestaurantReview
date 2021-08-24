@@ -60,7 +60,7 @@ restaurantsRouter.post('/', async (req, res) => {
 	}
 })
 
-restaurantsRouter.post('/:id/review', async (req, res) => {
+restaurantsRouter.post('/:id/reviews', async (req, res) => {
 	try {
 		if (!req.user) return res.sendStatus(401)
 		const restaurantId = req.params.id
