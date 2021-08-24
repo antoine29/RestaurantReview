@@ -5,10 +5,6 @@ const logger = require('./logger')
 morgan.token('body', req => JSON.stringify(req.body))
 const requestLogger = morgan(':method :url :status :res[content-length] - :response-time ms :body')
 
-const unknownEndpoint = (request, response) => {
-	response.status(404).send({ error: 'unknown endpoint' })
-}
-
 const tokenHandler = (request, response, next) => {
 	const authHeader = request.headers.authorization;
 	if (authHeader){
@@ -16,9 +12,9 @@ const tokenHandler = (request, response, next) => {
 			const token = authHeader.split(' ')[1];
 			jwt.verify(token, process.env.SECRET, (err, user) => {
 				if (err) {
-					return response.sendStatus(403)
+					return response.status(403).json({error: err})
 				}
-	
+				
 				request.user = user
 			})
 		}
@@ -28,6 +24,10 @@ const tokenHandler = (request, response, next) => {
 	}
 
 	next()
+}
+
+const unknownEndpoint = (request, response) => {
+	response.status(404).send({ error: 'unknown endpoint' })
 }
 
 module.exports = {
