@@ -24,6 +24,7 @@ authRouter.post('/signin', async (request, response) => {
 })
 
 authRouter.get('/user', async (request, response) => {
+	if(!request.token) return response.status(403).json({ error: 'mising token.' })
 	if(request.token.error) return response.status(403).json({ error: request.token.error })
 	return response.status(200).json(request.token.user)
 })
