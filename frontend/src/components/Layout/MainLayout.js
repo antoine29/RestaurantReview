@@ -35,7 +35,7 @@ const MainLayout = ({ component: Component, ...rest}) => {
       </Container>
       <Footer title="Footer" description="Something here to give the footer a purpose!" />
     </React.Fragment>
-  );
+  )
 }
 
 export default MainLayout

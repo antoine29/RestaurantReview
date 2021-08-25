@@ -67,7 +67,7 @@ const TopBar = (props) => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <AppBar class={classes.appbar}>
+      <AppBar className={classes.appbar}>
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={()=> {props.setOpenDrawer(true)}}>
             <MenuIcon />
