@@ -19,6 +19,21 @@ export const GetUser = async user => {
   return response.data
 }
 
+export const GetUserByStoredUser = async () => {
+  const storedToken = GetStoredUser()
+  if (!storedToken) return null
+
+  const response = await axios.get(`${baseUrl}/auth/user`, {
+    headers: {
+      Authorization: 'bearer ' + storedToken.token
+    }
+  })
+  .catch(error => null)
+
+  if(response === null) return null
+  return response.data
+}
+
 export const SignOut = (history) => {
   window.localStorage.clear()
   history.push('/signin')

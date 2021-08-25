@@ -14,7 +14,7 @@ import {
     ListItemAvatar
 } from '../UIComponents'
 import TextAvatar from '../TextAvatar'
-import { SignOut } from '../../services/Auth'
+import { SignOut } from '../../services/Users'
 
 const useStyles = makeStyles({
     list: {

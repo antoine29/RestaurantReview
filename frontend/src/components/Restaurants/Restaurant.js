@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom'
 import { GetRestaurant, GetRestaurantReviews, CreateRestaurantReview } from '../../services/Restaurants';
-import { GetStoredUser } from '../../services/Auth';
+import { GetStoredUser } from '../../services/Users';
 import {
     makeStyles,
     Button,

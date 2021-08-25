@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import {SignUp} from '../../services/Auth'
-import { GetStoredUser } from '../../services/Auth'
+import { GetStoredUser, SignUp } from '../../services/Users'
 import {
 	Avatar,
 	Button,
