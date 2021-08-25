@@ -11,6 +11,11 @@ const GetUser = async (id) => {
     return user
 }
 
+const GetUserByEmail = async (email) => {
+	const user = await User.findOne({ email: email })
+    return user
+}
+
 const CreateUser = async (user) => {
 	const saltRounds = 5
 	const passwordHash = await bcrypt.hash(user.password, saltRounds)
@@ -29,5 +34,6 @@ const CreateUser = async (user) => {
 module.exports = {
 	GetUsers,
 	GetUser,
+	GetUserByEmail,
 	CreateUser
 }

@@ -1,28 +1,36 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const authRouter = require('express').Router()
-const User = require('../models/User')
+const { GetUserByEmail } = require('../dao/users')
 
 authRouter.post('/signin', async (request, response) => {
-	const body = request.body
-	const user = await User.findOne({ email: body.email })
-	const passwordCorrect = user === null ?
-		false : await bcrypt.compare(body.password, user.passwordHash)
-	if (!(user && passwordCorrect))
-		return response.status(401).json({
-			error: 'invalid username or password'
-		})
+	const user = await GetUserByEmail(request.body.email)
+	if(!user) return response.status(401).json({ error: 'invalid username or password' })
+
+	const validCredentials = await checkUserPassword(request.body.password, user.passwordHash)
+	if(!validCredentials) return response.status(401).json({ error: 'invalid username or password' })
 
 	const tokenizedUser = jwt.sign({
-		username: user.username,
 		id: user._id,
+		username: user.username,
+		role: user.role
 	}, process.env.SECRET, { expiresIn: '2h' })
 
-	response
+	return response
 		.status(200)
 		.send({
 			token: tokenizedUser,
 		})
 })
+
+authRouter.post('/user', async (request, response) => {
+	if(request.token.error) return response.status(403).json({ error: request.token.error })
+	return response.status(200).json(request.token.user)
+})
+
+const checkUserPassword = async (password, hashedPassword) => {
+	const isPasswordCorrect = await bcrypt.compare(password, hashedPassword)
+	return isPasswordCorrect
+}
 
 module.exports = authRouter
