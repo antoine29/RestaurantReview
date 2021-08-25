@@ -43,14 +43,14 @@ restaurantsRouter.get('/:id/reviews', async (req, res) => {
 
 restaurantsRouter.post('/', async (req, res) => {
 	try {
-		if (!req.user) return res.sendStatus(401)
-		const user = await GetUser(req.user.id)
+		if (req.token.error) return res.status(401).json({ error: req.token.error})
+		const user = await GetUser(req.token.user.id)
 		if(user.role !== 'owner') return res.status(403).json({error: 'Owner role restricted operation.'})
 		const newRestaurant = {
 			name: req.body.name,
 			address: req.body.address,
 			url: req.body.url,
-			owner: req.user.id
+			owner: req.token.user.id
 		}
 		const savedRestaurant = await CreateRestaurant(newRestaurant)
 		return res.status(201).json(savedRestaurant)
@@ -62,7 +62,7 @@ restaurantsRouter.post('/', async (req, res) => {
 
 restaurantsRouter.post('/:id/reviews', async (req, res) => {
 	try {
-		if (!req.user) return res.sendStatus(401)
+		if (req.token.error) return res.status(401).json({ error: req.token.error})
 		const restaurantId = req.params.id
 		const restaurant = await GetRestaurant(restaurantId)
 		if (restaurant === null) return res.status(400).json({error: `No restaurant with id: \'${restaurantId}\' found.`})
@@ -71,7 +71,7 @@ restaurantsRouter.post('/:id/reviews', async (req, res) => {
 			comment: req.body.comment,
 			stars: req.body.stars,
 		}
-		const savedReview = await CreateRestaurantReview(newReview, restaurant, req.user)
+		const savedReview = await CreateRestaurantReview(newReview, restaurant, req.token.user)
 		return res.status(200).json(savedReview)
 	}
 	catch(error){

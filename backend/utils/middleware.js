@@ -11,15 +11,8 @@ const tokenHandler = (request, response, next) => {
 		if (authHeader.toLowerCase().startsWith('bearer ')) {
 			const token = authHeader.split(' ')[1];
 			jwt.verify(token, process.env.SECRET, (err, user) => {
-				if (err) {
-					return response.status(403).json({error: err})
-				}
-				
-				request.user = user
+				request.token = !!err  ? { user: null, error: err} : { user, error: null}
 			})
-		}
-		else {
-			return response.sendStatus(403)
 		}
 	}
 
