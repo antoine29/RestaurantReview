@@ -23,7 +23,7 @@ authRouter.post('/signin', async (request, response) => {
 		})
 })
 
-authRouter.post('/user', async (request, response) => {
+authRouter.get('/user', async (request, response) => {
 	if(request.token.error) return response.status(403).json({ error: request.token.error })
 	return response.status(200).json(request.token.user)
 })
