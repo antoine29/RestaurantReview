@@ -22,8 +22,8 @@ restaurantsRouter.get('/:id', async (req, res) => {
 	try {
 		const restaurantId = req.params.id
 		const restaurant = await GetRestaurant(restaurantId)
-		if(!restaurant) res.status(404).json({ error: `Restaurant ${restaurantId} not found.`})
-		return restaurant ? res.json(restaurant) : res.sendStatus(402)
+		if(!restaurant) return res.status(404).json({ error: `Restaurant ${restaurantId} not found.`})
+		return res.status(200).json(restaurant)
 	}
 	catch(error) {
 		return res.status(400).json({ error: error.message })
