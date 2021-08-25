@@ -2,7 +2,6 @@ const usersRouter = require('express').Router()
 const { GetUser, GetUsers, CreateUser } = require('../dao/users')
 
 usersRouter.get('/', async (request, response) => {
-	// const users = await User.find({}).populate('reviews', { user: 0 })
 	const users = await GetUsers()
 	response.json(users.map(u => u.toJSON()))
 })
@@ -10,7 +9,7 @@ usersRouter.get('/', async (request, response) => {
 usersRouter.get('/:id', async (request, response) => {
 	const userId = request.params.id
 	const user = await GetUser(userId)
-	return user ? response.json(user) : response.sendStatus(402)
+	return user ? response.json(user) : response.status(404).json({ error: `User ${userId} not found.` })
 })
 
 usersRouter.post('/', async (request, response) => {
@@ -26,7 +25,7 @@ usersRouter.post('/', async (request, response) => {
 			password: body.password
 		}
 
-		const savedUser = CreateUser(newUser)
+		const savedUser = await CreateUser(newUser)
 		return response.json(savedUser)
 	}
 	catch(error) {
