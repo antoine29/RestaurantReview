@@ -10,11 +10,10 @@ import Users from './components/Users'
 import ErrorPage from './components/ErrorPage'
 
 const UsersView = () => <MainLayout component={Users}/>
+const RestaurantView = () => <MainLayout component={Restaurant}/>
+const RestaurantsView = () => <MainLayout component={Restaurants}/>
 
 const AppRouter = () => {
-  // ToDo:
-  //   - default route for unsigned users should be /signin
-  //   - default route for signed users should be /
   return(
     <Router>
       <Switch>
@@ -25,21 +24,17 @@ const AppRouter = () => {
           <SignUpForm />
         </Route>
         <ProtectedRoute path='/users' Component={ UsersView }/>
-        <Route path='/restaurants/:id'>
-          <MainLayout component={Restaurant}/>
-        </Route>
-        <Route path='/restaurants'>
-          <MainLayout component={Restaurants}/>
-        </Route>
+        <ProtectedRoute path='/restaurants/:id' Component={ RestaurantView }/>
+        <ProtectedRoute path='/restaurants' Component={ RestaurantsView }/>
         <Route path='/error'>
           <MainLayout component={ErrorPage}/>
         </Route>
-        <Route path='/'>
-          <MainLayout component={Restaurants}/>
-        </Route>
         {/* ToDo: enhance this unknow/default route handling */}
-        <Route>
-            <div>Unknow route</div>
+        <Route exact path='/'>
+          <Redirect to='/restaurants' />
+        </Route>
+        <Route path=''>
+          <Redirect to='/error' />
         </Route>
       </Switch>
     </Router>
