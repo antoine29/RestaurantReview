@@ -5,6 +5,11 @@ import SignUpForm from './components/SignForms/SignUpForm'
 import MainLayout from './components/Layout/MainLayout'
 import Restaurant from './components/Restaurants/Restaurant'
 import Restaurants from './components/Restaurants/Restaurants'
+import ProtectedRoute from './ProtectedRoute'
+import Users from './components/Users'
+import ErrorPage from './components/ErrorPage'
+
+const UsersView = () => <MainLayout component={Users}/>
 
 const AppRouter = () => {
   // ToDo:
@@ -19,11 +24,15 @@ const AppRouter = () => {
         <Route path='/signup'>
           <SignUpForm />
         </Route>
+        <ProtectedRoute path='/users' Component={ UsersView }/>
         <Route path='/restaurants/:id'>
           <MainLayout component={Restaurant}/>
         </Route>
         <Route path='/restaurants'>
           <MainLayout component={Restaurants}/>
+        </Route>
+        <Route path='/error'>
+          <MainLayout component={ErrorPage}/>
         </Route>
         <Route path='/'>
           <MainLayout component={Restaurants}/>
