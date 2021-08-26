@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const _signUp = async (email, username, password, setSuccesfulSignUp, setShowFailedSignUpToast) => {
-	console.log("SingUp: ", username, email, password)
+	console.log("Signing up: ", username, email, password)
 	try {
 		const user = await SignUp({ username, email, password })
 		console.log('created user:', user)
