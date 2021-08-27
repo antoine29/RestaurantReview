@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const MainLayout = ({ component: Component, ...rest}) => {
+const MainLayout = ({ component: Component, user, ...props}) => {
   const classes = useStyles();
   const [openLeftDrawer, setOpenLeftDrawer] = useState(false)
 
@@ -26,7 +26,7 @@ const MainLayout = ({ component: Component, ...rest}) => {
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
-        <LeftDrawer open={openLeftDrawer} setOpenDrawer={setOpenLeftDrawer}/>
+        <LeftDrawer user={user} open={openLeftDrawer} setOpenDrawer={setOpenLeftDrawer}/>
         <TopBar title="RestaurantReview" setOpenDrawer={setOpenLeftDrawer}>
           <main>
             <Component />

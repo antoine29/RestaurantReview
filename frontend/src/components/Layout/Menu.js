@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     },
 })
 
-const Menu = ({setOpenDrawer}) => {
+const Menu = ({user, setOpenDrawer}) => {
     const classes = useStyles()
     const history = useHistory()
 
@@ -37,33 +37,40 @@ const Menu = ({setOpenDrawer}) => {
         onKeyDown={() => { setOpenDrawer(false) }}
     >
         <List>
-            {/* ToDo: fill real user info */}
             <ListItem alignItems="flex-start">
                 <ListItemAvatar>
-                    <TextAvatar text="UN" />
+                    <TextAvatar text={NameAvatar(user?.name || '')} />
                 </ListItemAvatar>
                 <ListItemText
-                    primary="User Name"
+                    primary={user?.name || "missing name"}
                     secondary={
                         <React.Fragment>
-                            {"@userName"}
+                            {`@${user?.username || "missing_username"}`}
                         </React.Fragment>
                     }
                 />
             </ListItem>
             <Divider />
-            <ListItem button>
+            <ListItem button onClick={() => {
+                setOpenDrawer(false)
+                history.push('/restaurants')
+            }}>
                 <ListItemIcon><RestaurantIcon /></ListItemIcon>
                 <ListItemText primary="Restaurants" />
             </ListItem>
-            <ListItem button>
+            { user?.role === 'admin' &&
+            <ListItem button onClick={() => {
+                setOpenDrawer(false)
+                history.push('/users')
+            }}>
                 <ListItemIcon><AnnouncementIcon /></ListItemIcon>
-                <ListItemText primary="Latest Reviews" />
-            </ListItem>
-            <ListItem button>
+                <ListItemText primary="Users" />
+            </ListItem>}
+            { user?.role === 'owner' &&
+            <ListItem button >
                 <ListItemIcon><RateReviewIcon /></ListItemIcon>
-                <ListItemText primary="My Reviews" />
-            </ListItem>
+                <ListItemText primary="Add Restaurant" />
+            </ListItem>}
         </List>
         <Divider />
         <List>
@@ -77,4 +84,23 @@ const Menu = ({setOpenDrawer}) => {
     </div>)
 }
 
+const NameAvatar = (name) => {
+    // ToDo: unittests
+    const twocharsStringGenerator = (name) => {
+        if(!name || name==='') return ''
+        const words = name.split(' ')
+        if(words.length > 1) {
+            const word1 = words[0].replace(/\s/g,'')
+            const word2 = words[1].replace(/\s/g,'')
+            if(word1.length > 0 && word2.length > 0) return word1.charAt(0).concat(word2.charAt(0))
+        }
+    
+        const word = name.replace(/\s/g,'')
+        if(!word || word==='') return ''
+        if(word.length > 1) return word.slice(0, 2)
+        return word
+    }
+
+    return twocharsStringGenerator(name).toUpperCase()
+}
 export default Menu
