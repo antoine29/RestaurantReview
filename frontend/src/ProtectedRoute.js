@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { GetUserByStoredUser, DeleteStoredUser } from './services/Users'
 import Roles from './Roles'
+import { ErrorPageView } from './AppRouter'
 
 const checkUserAccess = (user, targetPath) => {
   const allowedRoutes = Roles[user.role]
@@ -38,15 +39,19 @@ const ProtectedRoute = ({ Component, ...props }) => {
 
   if(!checkUserAccess(user, props.path)){
     console.log(`Not allowed to go to ${props.path}`)
+    {/* <Redirect to='/error' /> */}
     return (
-      <Redirect to='/error' />
+      <Route
+      {...props}
+      render={routeProps => <ErrorPageView user={user} />}
+    />
     )
   }
 
   return (
     <Route
       {...props}
-      render={routeProps => <Component {...routeProps} />}
+      render={routeProps => <Component user={user} />}
     />
   )
 }
