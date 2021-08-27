@@ -36,7 +36,7 @@ const GetRestaurantReviews = async (restaurantId) => {
 	return reviews
 }
 
-const GetRestaurantRating = async (restaurantId) => {
+const CalculateRestaurantRating = async (restaurantId) => {
     const restaurantRating_result = await Review.aggregate([
 		{ $match: { restaurant: restaurantId }},
 		{ $group: {
@@ -44,7 +44,7 @@ const GetRestaurantRating = async (restaurantId) => {
 			averageStars: { $avg: '$stars' },
 			maxStar: { $max: "$stars" },
 			minStar: { $min: "$stars" },
-			totalStars: { $count: {} }
+			totalReviews: { $count: {} }
 		}}
 	]).exec()
 
@@ -60,7 +60,7 @@ const UpdateRestaurant = async (restaurantId, newRestaurant) => {
 	if (newRestaurant.url) existingRestaurant.url = newRestaurant.url
 	if(newRestaurant.rating){
 		if (newRestaurant.rating.averageStars) existingRestaurant.rating.averageStars = newRestaurant.rating.averageStars
-		if (newRestaurant.rating.totalStars) existingRestaurant.rating.totalStars = newRestaurant.rating.totalStars
+		if (newRestaurant.rating.totalReviews) existingRestaurant.rating.totalReviews = newRestaurant.rating.totalReviews
 		if (newRestaurant.rating.minStar) existingRestaurant.rating.minStar = newRestaurant.rating.minStar
 		if (newRestaurant.rating.maxStar) existingRestaurant.rating.maxStar = newRestaurant.rating.maxStar
 	}
@@ -71,7 +71,7 @@ const UpdateRestaurant = async (restaurantId, newRestaurant) => {
 module.exports = {
 	GetRestaurants,
     GetRestaurant,
-	GetRestaurantRating,
+	CalculateRestaurantRating,
 	GetRestaurantReviews,
     CreateRestaurant,
     CreateRestaurantReview,

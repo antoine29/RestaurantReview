@@ -3,7 +3,7 @@ const { GetUser } = require('../dao/users')
 const {
 	GetRestaurants,
     GetRestaurant,
-	GetRestaurantRating,
+	CalculateRestaurantRating,
 	GetRestaurantReviews,
     CreateRestaurant,
     CreateRestaurantReview,
@@ -72,7 +72,7 @@ restaurantsRouter.post('/:id/reviews', async (req, res) => {
 			stars: req.body.stars,
 		}
 		const savedReview = await CreateRestaurantReview(newReview, restaurant._id, req.token.user)
-		const updatedRestaurantRating = await GetRestaurantRating(restaurant._id)
+		const updatedRestaurantRating = await CalculateRestaurantRating(restaurant._id)
 		if(updatedRestaurantRating) await UpdateRestaurant(restaurant._id, {rating: updatedRestaurantRating})
 		return res.status(200).json(savedReview)
 	}
@@ -86,7 +86,7 @@ restaurantsRouter.get('/:id/rating', async (req, res) => {
 		if (req.token.error) return res.status(401).json({ error: req.token.error})
 		const restaurant = await GetRestaurant(req.params.id)
 		if (!restaurant) return res.status(404).json({ error: error.message })
-		const restaurantRating = await GetRestaurantRating(restaurant._id)
+		const restaurantRating = await CalculateRestaurantRating(restaurant._id)
 		return res.status(200).json(restaurantRating)
 	}
 	catch(error){

@@ -6,7 +6,7 @@ const RestaurantRating = new mongoose.Schema({
 		type: Number,
 		default: 0
 	},
-	totalStars: {
+	totalReviews: {
 		type: Number,
 		default: 0
 	},
