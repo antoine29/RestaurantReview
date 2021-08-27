@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import { GetUserByStoredUser } from './services/Users'
+import { GetUserByStoredUser, DeleteStoredUser } from './services/Users'
 import Roles from './Roles'
 
 const checkUserAccess = (user, targetPath) => {
@@ -30,6 +30,7 @@ const ProtectedRoute = ({ Component, ...props }) => {
 
   if(user === null){
     console.log('error validating local user, please sign in again')
+    DeleteStoredUser()
     return (
       <Redirect to='/signin' />
     )

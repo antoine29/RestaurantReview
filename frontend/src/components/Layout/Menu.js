@@ -14,7 +14,7 @@ import {
     ListItemAvatar
 } from '../UIComponents'
 import TextAvatar from '../TextAvatar'
-import { SignOut } from '../../services/Users'
+import { DeleteStoredUser } from '../../services/Users'
 
 const useStyles = makeStyles({
     list: {
@@ -67,7 +67,9 @@ const Menu = ({setOpenDrawer}) => {
         </List>
         <Divider />
         <List>
-            <ListItem button onClick={()=>{SignOut(history)}}>
+            <ListItem button onClick={()=>{
+                DeleteStoredUser()
+                history.push('/signin')}}>
                 <ListItemIcon><ExitToAppIcon /></ListItemIcon>
                 <ListItemText primary="Sign out" />
             </ListItem>

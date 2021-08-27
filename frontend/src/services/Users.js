@@ -34,9 +34,8 @@ export const GetUserByStoredUser = async () => {
   return response.data
 }
 
-export const SignOut = (history) => {
+export const DeleteStoredUser = () => {
   window.localStorage.clear()
-  history.push('/signin')
 }
 
 export const GetStoredUser = () => {
