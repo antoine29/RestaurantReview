@@ -1,32 +1,22 @@
 const mongoose = require('mongoose')
 
-const reviewSchema = new mongoose.Schema({
-	comment: {
+const reviewResponseSchema = new mongoose.Schema({
+	response: {
 		type: String,
 		minlength: 3
 	},
-	stars: {
-    	type: Number,
-		min: 0,
-		max: 5,
-		required : true
-	},
-	restaurant: {
+	review: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Restaurant'
+		ref: 'Review'
 	},
 	user: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
-	},
-	response: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'ReviewResponse'
 	}
 },
 { timestamps: true })
 
-reviewSchema.set('toJSON', {
+reviewResponseSchema.set('toJSON', {
 	transform: (document, returnedObject) => {
 		returnedObject.id = returnedObject._id
 		delete returnedObject._id
@@ -34,4 +24,4 @@ reviewSchema.set('toJSON', {
 	}
 })
 
-module.exports = mongoose.model('Review', reviewSchema)
+module.exports = mongoose.model('ReviewResponse', reviewResponseSchema)
