@@ -53,7 +53,7 @@ const Restaurant = ({ id }) => {
                     const createdReview = await _addReview(userMatcher.params.id, comment, stars)
                     setRestaurantReviews([...restaurantReviews, createdReview])
                 }}
-                />
+            />
             <RestaurantCard restaurant={restaurant}/>
             <Button
               variant="contained"

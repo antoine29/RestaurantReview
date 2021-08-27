@@ -81,8 +81,9 @@ const RestaurantCard = ({ restaurant }) => {
         <Grid item>
           <div className={classes.mainFeaturedPostContent}>
             <Box component="fieldset" mb={3} borderColor="transparent" style={{backgroundColor: '#c0ffc8', padding: 0, color: 'black'}}>
-              <Rating name="read-only" value={restaurant.rate.starAverage} readOnly size="large"/>
-              <Typography variant="subtitle1">{restaurant.rate.totalReviews} reviews </Typography>
+              <Rating name="read-only" value={restaurant.rating.averageStars} readOnly size="large"/>
+              <Typography variant="subtitle1">{restaurant.rating.totalReviews} reviews </Typography>
+              <Typography variant="subtitle1">{restaurant.rating.maxStar} max rating / {restaurant.rating.minStar} min rating </Typography>
             </Box>
           </div>
         </Grid>
