@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 mongoose.set('useCreateIndex', true)
+const RestaurantRating = require('./RestaurantRating')
 
 const restaurantSchema = new mongoose.Schema({
 	name: {
@@ -23,6 +24,10 @@ const restaurantSchema = new mongoose.Schema({
 	owner: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User'
+	},
+	rating: {
+		type: RestaurantRating,
+		default: () => ({})
 	}
 })
 
