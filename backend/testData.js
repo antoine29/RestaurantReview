@@ -13,12 +13,24 @@ const createdRests = {}
 
 const insertUsers = async () => {
     const saltRounds = 5
+
+    const admin0Pass = await bcrypt.hash("admin0", saltRounds)
+    const admin0 = new User({
+        name: 'Gus Fring',
+        username: "gus_admin0",
+        email: "admin0@mail.com",
+        role: "admin",
+        passwordHash: admin0Pass,
+    })
+    const createdAdmin0 = await admin0.save()
+    createdOwners['admin0'] = createdAdmin0
+    console.log(createdAdmin0)
     
     const owner0Pass = await bcrypt.hash("owner0", saltRounds)
     const owner0 = new User({
-        username: "owner0",
-        email: "owner0",
-        name: "owner0",
+        name: 'Matt Murdock',
+        username: "mat_owner0",
+        email: "owner0@mail.com",
         role: "owner",
         passwordHash: owner0Pass,
     })
@@ -28,9 +40,9 @@ const insertUsers = async () => {
 
     const owner1Pass = await bcrypt.hash("owner1", saltRounds)
     const owner1 = new User({
-        username: "owner1",
-        email: "owner1",
-        name: "owner1",
+        name: "Peter Parker",
+        username: "peter_owner1",
+        email: "owner1@mail.com",
         role: "owner",
         passwordHash: owner1Pass,
     })
@@ -40,9 +52,9 @@ const insertUsers = async () => {
 
     const owner2Pass = await bcrypt.hash("owner2", saltRounds)
     const owner2 = new User({
-        username: "owner2",
-        email: "owner2",
-        name: "owner2",
+        name: "Steve R",
+        username: "steve_owner2",
+        email: "owner2@mail.com",
         role: "owner",
         passwordHash: owner2Pass,
     })

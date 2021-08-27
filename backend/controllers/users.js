@@ -19,6 +19,7 @@ usersRouter.post('/', async (request, response) => {
 			return response.status(400).json({ error: '`password` field must be defined and must be greather than 3 chars. length.' })
 
 		const newUser = {
+			name: body.name,
 			username: body.username,
 			email: body.email,
 			name: body.name,

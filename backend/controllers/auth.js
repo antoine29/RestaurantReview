@@ -12,6 +12,7 @@ authRouter.post('/signin', async (request, response) => {
 
 	const tokenizedUser = jwt.sign({
 		id: user._id,
+		name: user.name,
 		username: user.username,
 		role: user.role
 	}, process.env.SECRET, { expiresIn: '2h' })
