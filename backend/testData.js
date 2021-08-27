@@ -56,7 +56,13 @@ const insertRestaurants = async () => {
         name: 'Piccola Cucina Osteria',
         address: '196 Spring St Soho, New York City, NY 10012-3621',
         url: "https://media-cdn.tripadvisor.com/media/photo-m/1280/16/9f/ef/5c/philip-guardione.jpg",
-        owner: createdOwners['owner0']._id
+        owner: createdOwners['owner0']._id,
+        rating: {
+            averageStars: 5,
+            totalReviews: 1,
+            minStar:5,
+            maxStar:5,
+        }
     })
     const createdRest00 = await rest00.save()
     console.log(createdRest00)
@@ -66,7 +72,7 @@ const insertRestaurants = async () => {
         name: 'Boucherie West Village',
         address: '99 7th Ave S, New York City, NY 10014-3415',
         url: 'https://media-cdn.tripadvisor.com/media/photo-o/0f/4b/bd/30/patio.jpg',
-        owner: createdOwners['owner0']._id        
+        owner: createdOwners['owner0']._id
     })
     const createdRest01 = await rest01.save()
     console.log(createdRest01)
@@ -75,7 +81,13 @@ const insertRestaurants = async () => {
         name: 'City Vineyard',
         address: '233 West Street Pier 26, Hudson River Park, New York City, NY 10013',
         url: 'https://media-cdn.tripadvisor.com/media/photo-o/14/94/d8/8e/city-vineyard-dining.jpg',
-        owner: createdOwners['owner1']._id        
+        owner: createdOwners['owner1']._id,
+        rating: {
+            averageStars: 3,
+            totalReviews: 1,
+            minStar:3,
+            maxStar:3,
+        }   
     })
     const createdRest10 = await rest10.save()
     console.log(createdRest10)
@@ -94,7 +106,13 @@ const insertRestaurants = async () => {
         name: "rest20",
         address: "rest20",
         url: "rest20",
-        owner: createdOwners['owner2']._id        
+        owner: createdOwners['owner2']._id,
+        rating: {
+            averageStars: 1,
+            totalReviews: 1,
+            minStar:1,
+            maxStar:1,
+        }  
     })
     const createdRest20 = await rest20.save()
     console.log(createdRest20)
