@@ -3,9 +3,11 @@ const { GetUser } = require('../dao/users')
 const {
 	GetRestaurants,
     GetRestaurant,
+	GetRestaurantRating,
+	GetRestaurantReviews,
     CreateRestaurant,
     CreateRestaurantReview,
-	GetRestaurantReviews
+	UpdateRestaurant
 } = require('../dao/restaurants')
 
 restaurantsRouter.get('/', async (req, res) => {
@@ -63,16 +65,29 @@ restaurantsRouter.post('/', async (req, res) => {
 restaurantsRouter.post('/:id/reviews', async (req, res) => {
 	try {
 		if (req.token.error) return res.status(401).json({ error: req.token.error})
-		const restaurantId = req.params.id
-		const restaurant = await GetRestaurant(restaurantId)
-		if (restaurant === null) return res.status(400).json({error: `No restaurant with id: \'${restaurantId}\' found.`})
-		
+		const restaurant = await GetRestaurant(req.params.id)
+		if (!restaurant) return res.status(404).json({ error: error.message })
 		const newReview = {
 			comment: req.body.comment,
 			stars: req.body.stars,
 		}
-		const savedReview = await CreateRestaurantReview(newReview, restaurant, req.token.user)
+		const savedReview = await CreateRestaurantReview(newReview, restaurant._id, req.token.user)
+		const updatedRestaurantRating = await GetRestaurantRating(restaurant._id)
+		if(updatedRestaurantRating) await UpdateRestaurant(restaurant._id, {rating: updatedRestaurantRating})
 		return res.status(200).json(savedReview)
+	}
+	catch(error){
+		return res.status(400).json({ error: error.message })
+	}
+})
+
+restaurantsRouter.get('/:id/rating', async (req, res) => {
+	try {
+		if (req.token.error) return res.status(401).json({ error: req.token.error})
+		const restaurant = await GetRestaurant(req.params.id)
+		if (!restaurant) return res.status(404).json({ error: error.message })
+		const restaurantRating = await GetRestaurantRating(restaurant._id)
+		return res.status(200).json(restaurantRating)
 	}
 	catch(error){
 		return res.status(400).json({ error: error.message })
