@@ -24,10 +24,10 @@ const _addReview = async (restaurantId, comment, stars) => {
     return createdReview
 }
 
-const Restaurant = ({ id }) => {
+const Restaurant = () => {
     const classes = useStyles();
-    const [openAddReview, setOpenAddReview] = useState(false)
     const userMatcher = useRouteMatch('/restaurants/:id')
+    const [openAddReview, setOpenAddReview] = useState(false)
     const [restaurant, setRestaurant] = useState(null)
     const [restaurantReviews, setRestaurantReviews] = useState(null)
 
