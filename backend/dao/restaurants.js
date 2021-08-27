@@ -7,7 +7,7 @@ const GetRestaurants = async () => {
 }
 
 const GetRestaurant = async (restaurantId) => {
-	const restaurant = await Restaurant.findById(restaurantId)
+	const restaurant = await Restaurant.findById(restaurantId).populate('owner', { reviews: 0 })
 	return restaurant
 }
 
@@ -18,7 +18,6 @@ const CreateRestaurant = async (restaurant) => {
 }
 
 const CreateRestaurantReview = async (review, restaurantId, user) => {
-	
 	const newReview = new Review({
         ...review,
         restaurant: restaurantId,
@@ -32,7 +31,7 @@ const CreateRestaurantReview = async (review, restaurantId, user) => {
 }
 
 const GetRestaurantReviews = async (restaurantId) => {
-    const reviews = await Review.find({ restaurant: restaurantId}).populate('user', { reviews: 0, role: 0})
+    const reviews = await Review.find({ restaurant: restaurantId}).populate('user', { reviews: 0, role: 0}).populate('response')
 	return reviews
 }
 
@@ -68,6 +67,11 @@ const UpdateRestaurant = async (restaurantId, newRestaurant) => {
 	return existingRestaurant
 }
 
+const GetUserRestaurants = async userId => {
+	const restaurants = await Restaurant.find({owner: userId})
+	return restaurants
+}
+
 module.exports = {
 	GetRestaurants,
     GetRestaurant,
@@ -75,5 +79,6 @@ module.exports = {
 	GetRestaurantReviews,
     CreateRestaurant,
     CreateRestaurantReview,
-	UpdateRestaurant
+	UpdateRestaurant,
+	GetUserRestaurants
 }
