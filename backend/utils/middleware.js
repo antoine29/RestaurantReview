@@ -11,12 +11,16 @@ const tokenHandler = (request, response, next) => {
 		if (authHeader.toLowerCase().startsWith('bearer ')) {
 			const token = authHeader.split(' ')[1];
 			jwt.verify(token, process.env.SECRET, (err, user) => {
-				request.token = !!err  ? { user: null, error: err} : { user, error: null}
+				if(err) return response.status(400).json({error: err.message})
+				else {
+					request.user = user
+					next()
+				}
 			})
 		}
+		else return response.status(400).json({error: 'Invalid token.'})
 	}
-
-	next()
+	else return response.status(401).json({error: 'Missing token.'})
 }
 
 const unknownEndpoint = (request, response) => {
