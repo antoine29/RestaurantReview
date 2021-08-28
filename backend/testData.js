@@ -148,6 +148,9 @@ const insertReviews = async () => {
         user: createdOwners['owner0']._id
     })
     const createdRevR00 = await revR00.save()
+    // picola
+    createdRests['rest00'].reviews = [createdRevR00._id]
+    await createdRests['rest00'].save()
     console.log(createdRevR00)
 
     const revR10 = new Review({
@@ -157,6 +160,9 @@ const insertReviews = async () => {
         user: createdOwners['owner1']._id
     })
     const createdRevR10 = await revR10.save()
+    // vineyard
+    createdRests['rest10'].reviews = [createdRevR10._id]
+    await createdRests['rest10'].save()
     console.log(createdRevR10)
 
     const revR20 = new Review({
@@ -166,6 +172,9 @@ const insertReviews = async () => {
         user: createdOwners['owner2']._id
     })
     const createdRevR20 = await revR20.save()
+    // rest20
+    createdRests['rest20'].reviews = [createdRevR20._id]
+    await createdRests['rest20'].save()
     console.log(createdRevR20)
 }
 
