@@ -7,6 +7,11 @@ export const GetRestaurants = async () => {
   return response.data
 }
 
+export const GetUserRestaurants = async userId => {
+  const response = await axios.get(`${baseUrl}/api/users/${userId}/restaurants`)
+  return response.data
+}
+
 export const GetRestaurant = async (id) => {
   const response = await axios.get(`${baseUrl}/api/restaurants/${id}`)
   return response.data

@@ -8,11 +8,13 @@ import Restaurants from './components/Restaurants/Restaurants'
 import ProtectedRoute from './ProtectedRoute'
 import Users from './components/Users'
 import ErrorPage from './components/ErrorPage'
+import UserRestaurants from './components/Restaurants/UserRestaurants'
 
 const UsersView = (props) => <MainLayout component={Users} user={props.user}/>
 const RestaurantView = (props) => <MainLayout component={Restaurant} user={props.user}/>
 const RestaurantsView = (props) => <MainLayout component={Restaurants} user={props.user}/>
 export const ErrorPageView = (props) => <MainLayout component={ErrorPage} user={props.user}/>
+const UserRestaurantsView = (props) => <MainLayout component={UserRestaurants} user={props.user}/>
 
 const AppRouter = () => {
   return(
@@ -24,9 +26,11 @@ const AppRouter = () => {
         <Route path='/signup'>
           <SignUpForm />
         </Route>
-        <ProtectedRoute path='/users' Component={ UsersView }/>
         <ProtectedRoute path='/restaurants/:id' Component={ RestaurantView }/>
         <ProtectedRoute path='/restaurants' Component={ RestaurantsView }/>
+        <ProtectedRoute exact path='/users' Component={ UsersView }/>
+        {/* ToDo: change to /owner/id/restaurants */}
+        <ProtectedRoute path='/users/:id/restaurants' Component={ UserRestaurantsView }/>
         <Route path='/error'>
           <MainLayout component={ErrorPageView}/>
         </Route>

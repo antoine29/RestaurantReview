@@ -67,9 +67,12 @@ const Menu = ({user, setOpenDrawer}) => {
                 <ListItemText primary="Users" />
             </ListItem>}
             { user?.role === 'owner' &&
-            <ListItem button >
+            <ListItem button onClick={() => {
+                setOpenDrawer(false)
+                history.push(`/users/${user.id}/restaurants`)
+            }}>
                 <ListItemIcon><RateReviewIcon /></ListItemIcon>
-                <ListItemText primary="Add Restaurant" />
+                <ListItemText primary="My Restaurants" />
             </ListItem>}
         </List>
         <Divider />
