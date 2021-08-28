@@ -6,6 +6,7 @@ const cors = require('cors')
 const restaurantRouter = require('./controllers/restaurants')
 const usersRouter = require('./controllers/users')
 const authRouter = require('./controllers/auth')
+const tokenValidator = require('./controllers/tokenValidator')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
@@ -22,20 +23,18 @@ app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
 app.use(middleware.requestLogger)
+
+app.get('/health', async (req, res) => res.send(`<p>Backend is working!</p>`))
+app.use('/auth', authRouter)
+
 app.use(middleware.tokenHandler)
-
-app.get('/health', async (req, res) => {
-	return res.send(`<p>Backend is working!</p>`)
-})
-
-app.get('/info', async (req, res) => {
+app.get('/api/info', async (req, res) => {
 	const restaurantsCount = await Restaurants.countDocuments({})
 	return res.send(`<p>${restaurantsCount} restaurant entries.</p><p>${new Date()}</p>`)
 })
-
+app.use('/api/token', tokenValidator)
 app.use('/api/users', usersRouter)
 app.use('/api/restaurants', restaurantRouter)
-app.use('/auth', authRouter)
 app.use(middleware.unknownEndpoint)
 
 module.exports = app
