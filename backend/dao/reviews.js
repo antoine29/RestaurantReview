@@ -6,6 +6,19 @@ const GetReview = async (reviewId) => {
 	return existingReview
 }
 
+const CreateReview = async (review, restaurantId, user) => {
+	const newReview = new Review({
+        ...review,
+        restaurant: restaurantId,
+        user: user.id
+	})
+	
+	const savedReview = await newReview.save()
+	// ToDo: do we need this populate?
+	const populatedReview = await Review.findById(savedReview.id).populate('user', {reviews: 0, role: 0})
+	return populatedReview
+}
+
 const CreateReviewResponse = async (userId, reviewId, response) => {	
 	const newReviewResponse = new ReviewResponse({
 		response,
@@ -31,5 +44,6 @@ const UpdateReview = async (reviewId, updatedReview) => {
 module.exports = {
 	GetReview,
 	CreateReviewResponse,
-	UpdateReview
+	UpdateReview,
+	CreateReview
 }

@@ -2,36 +2,27 @@ const Restaurant = require('../models/Restaurant')
 const Review = require('../models/Review')
 
 const GetRestaurants = async () => {
-	const restaurants = await Restaurant.find({})
+	const restaurants = await Restaurant.find({}).populate('owner', { role: 0 })
 	return restaurants
 }
 
 const GetRestaurant = async (restaurantId) => {
-	const restaurant = await Restaurant.findById(restaurantId).populate('owner', { reviews: 0 })
+	const restaurant = await Restaurant.findById(restaurantId).populate('owner', { role: 0 })
 	return restaurant
 }
 
 const CreateRestaurant = async (restaurant) => {
 	const newRestaurant = new Restaurant(restaurant)
 	const savedRestaurant = await newRestaurant.save()
-	return savedRestaurant
-}
-
-const CreateRestaurantReview = async (review, restaurantId, user) => {
-	const newReview = new Review({
-        ...review,
-        restaurant: restaurantId,
-        user: user.id
-	})
-	
-	const savedReview = await newReview.save()
-	// ToDo: do we need this populate?
-	const populatedReview = await Review.findById(savedReview.id).populate('user', {reviews: 0, role: 0})
-	return populatedReview
+	const savedPopulatedRestaurant = await GetRestaurant(savedRestaurant._id)
+	return savedPopulatedRestaurant
 }
 
 const GetRestaurantReviews = async (restaurantId) => {
-    const reviews = await Review.find({ restaurant: restaurantId}).populate('user', { reviews: 0, role: 0}).populate('response')
+    const reviews = await Review
+		.find({ restaurant: restaurantId})
+		.populate('user', { reviews: 0, role: 0})
+		.populate('response', { user: 0 })
 	return reviews
 }
 
@@ -72,13 +63,17 @@ const GetUserRestaurants = async userId => {
 	return restaurants
 }
 
+const DeleteRestaurant = async restaurantId => {
+	await Restaurant.deleteOne({ _id: restaurantId })
+}
+
 module.exports = {
 	GetRestaurants,
     GetRestaurant,
 	CalculateRestaurantRating,
 	GetRestaurantReviews,
     CreateRestaurant,
-    CreateRestaurantReview,
 	UpdateRestaurant,
-	GetUserRestaurants
+	GetUserRestaurants,
+	DeleteRestaurant
 }
