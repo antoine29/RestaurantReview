@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const UserRestaurants = () => {
+const OwnerRestaurants = () => {
     const userMatcher = useRouteMatch('/owner/:id/restaurants')
     const [restaurants, setRestaurants] = useState([])
     useEffect(() => {
@@ -24,8 +24,8 @@ const UserRestaurants = () => {
     }, [])
 
     if (restaurants && restaurants.length > 0)
-        return (restaurants.map(restaurant => <RestaurantCard restaurant={restaurant} />))
+        return (restaurants.map(restaurant => <RestaurantCard restaurant={restaurant} ownerView />))
     else return (<div>NO RESTS</div>)
 }
 
-export default UserRestaurants
+export default OwnerRestaurants
