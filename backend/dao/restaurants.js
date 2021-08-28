@@ -2,12 +2,32 @@ const Restaurant = require('../models/Restaurant')
 const Review = require('../models/Review')
 
 const GetRestaurants = async () => {
-	const restaurants = await Restaurant.find({}).populate('owner', { role: 0 })
+	const restaurants = await Restaurant
+		.find({})
+		.sort({ 'rating.averageStars': -1 })
+		.populate('owner', { role: 0 })
 	return restaurants
 }
 
 const GetRestaurant = async (restaurantId) => {
-	const restaurant = await Restaurant.findById(restaurantId).populate('owner', { role: 0 })
+	const restaurant = await Restaurant
+		.findById(restaurantId)
+		.populate({
+			path: 'reviews',
+			populate: { path: 'user' }
+		})
+		.populate({
+			path: 'reviews',
+			populate: { path: 'response' }	
+		})
+		.populate({
+			path: 'reviews',
+			populate: {
+				path: 'response',
+				populate: "user"
+			}
+		})
+		.populate('owner')
 	return restaurant
 }
 
@@ -48,18 +68,36 @@ const UpdateRestaurant = async (restaurantId, newRestaurant) => {
 	if (newRestaurant.name) existingRestaurant.name = newRestaurant.name 
 	if (newRestaurant.address) existingRestaurant.address = newRestaurant.address
 	if (newRestaurant.url) existingRestaurant.url = newRestaurant.url
-	if(newRestaurant.rating){
+	if (newRestaurant.rating){
 		if (newRestaurant.rating.averageStars) existingRestaurant.rating.averageStars = newRestaurant.rating.averageStars
 		if (newRestaurant.rating.totalReviews) existingRestaurant.rating.totalReviews = newRestaurant.rating.totalReviews
 		if (newRestaurant.rating.minStar) existingRestaurant.rating.minStar = newRestaurant.rating.minStar
 		if (newRestaurant.rating.maxStar) existingRestaurant.rating.maxStar = newRestaurant.rating.maxStar
 	}
+	if (newRestaurant.reviews) existingRestaurant.reviews = newRestaurant.reviews
 	await existingRestaurant.save()
 	return existingRestaurant
 }
 
 const GetUserRestaurants = async userId => {
-	const restaurants = await Restaurant.find({owner: userId})
+	const restaurants = await Restaurant
+		.find({owner: userId})
+		.populate({
+			path: 'reviews',
+			populate: { path: 'user' }
+		})
+		.populate({
+			path: 'reviews',
+			populate: { path: 'response' }	
+		})
+		.populate({
+			path: 'reviews',
+			populate: {
+				path: 'response',
+				populate: "user"
+			}
+		})
+		.populate('owner')
 	return restaurants
 }
 
