@@ -29,6 +29,7 @@ const restaurantSchema = new mongoose.Schema({
 		type: RestaurantRating,
 		default: () => ({})
 	}
+	// ToDo: maybe include review ids, to populate on getRestaurant query
 })
 
 restaurantSchema.set('toJSON', {
