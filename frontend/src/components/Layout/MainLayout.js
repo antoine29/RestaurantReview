@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react'
 import {
   makeStyles,
   CssBaseline,
-  Grid,
-  Container,
-  GitHubIcon,
-  FacebookIcon,
-  TwitterIcon
+  Container
 } from '../UIComponents'
-import TopBar from './TopBar';
-import LeftDrawer from './LeftDrawer';
-import Footer from './Footer';
+import TopBar from './TopBar'
+import LeftDrawer from './LeftDrawer'
+import Footer from './Footer'
+import Toast from '../Toast'
+import BackDropSpinner from '../BackDropSpinner'
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
@@ -21,15 +19,19 @@ const useStyles = makeStyles((theme) => ({
 const MainLayout = ({ component: Component, user, ...props}) => {
   const classes = useStyles();
   const [openLeftDrawer, setOpenLeftDrawer] = useState(false)
+  const [toastState, setToastState] = useState(null)
+  const [loadingModal, setLoadingModal] = useState(false)
 
   return (
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
+      <BackDropSpinner open={loadingModal}/>
+      <Toast open={!!toastState} handleClose={() => { setToastState(null) }} severity={toastState?.severity} message={toastState?.message} />
         <LeftDrawer user={user} open={openLeftDrawer} setOpenDrawer={setOpenLeftDrawer}/>
         <TopBar title="RestaurantReview" setOpenDrawer={setOpenLeftDrawer}>
           <main>
-            <Component />
+            <Component setToastState={setToastState} setLoadingModal={setLoadingModal}/>
           </main>
         </TopBar>
       </Container>
