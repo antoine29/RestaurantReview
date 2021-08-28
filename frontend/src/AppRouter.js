@@ -30,7 +30,7 @@ const AppRouter = () => {
         <ProtectedRoute path='/restaurants' Component={ RestaurantsView }/>
         <ProtectedRoute exact path='/users' Component={ UsersView }/>
         {/* ToDo: change to /owner/id/restaurants */}
-        <ProtectedRoute path='/users/:id/restaurants' Component={ UserRestaurantsView }/>
+        <ProtectedRoute path='/owner/:id/restaurants' Component={ UserRestaurantsView }/>
         <Route path='/error'>
           <MainLayout component={ErrorPageView}/>
         </Route>

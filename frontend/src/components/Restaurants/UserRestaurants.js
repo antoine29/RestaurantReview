@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const UserRestaurants = () => {
-    const userMatcher = useRouteMatch('/users/:id/restaurants')
+    const userMatcher = useRouteMatch('/owner/:id/restaurants')
     const [restaurants, setRestaurants] = useState([])
     useEffect(() => {
         const userId = userMatcher.params.id
