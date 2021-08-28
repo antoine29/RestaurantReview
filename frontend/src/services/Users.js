@@ -10,7 +10,7 @@ export const SignIn = async credentials => {
 
 // ToDo: send the actual error messages in case of errors, currently an exception is throwed
 export const SignUp = async user => {
-  const response = await axios.post(`${baseUrl}/api/users`, user)
+  const response = await axios.post(`${baseUrl}/auth/signup`, user)
   return response.data
 }
 
@@ -23,7 +23,7 @@ export const GetUserByStoredUser = async () => {
   const storedToken = GetStoredUser()
   if (!storedToken) return null
 
-  const response = await axios.get(`${baseUrl}/auth/user`, {
+  const response = await axios.get(`${baseUrl}/api/token`, {
     headers: {
       Authorization: 'bearer ' + storedToken.token
     }
