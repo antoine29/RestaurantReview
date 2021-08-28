@@ -49,10 +49,10 @@ const useStyles = makeStyles((theme) => ({
 	}
 }))
 
-const _signUp = async (email, username, password, setSuccesfulSignUp, setShowFailedSignUpToast) => {
+const _signUp = async (name, email, username, password, setSuccesfulSignUp, setShowFailedSignUpToast) => {
 	console.log("Signing up: ", username, email, password)
 	try {
-		const user = await SignUp({ username, email, password })
+		const user = await SignUp({ name, username, email, password })
 		console.log('created user:', user)
 		setSuccesfulSignUp(true)
 		setShowFailedSignUpToast(false)
@@ -66,6 +66,7 @@ const _signUp = async (email, username, password, setSuccesfulSignUp, setShowFai
 const SignUpForm = () => {
 	const classes = useStyles();
 	const history = useHistory()
+	const [name, setName] = useState('')
 	const [email, setEmail] = useState('')
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
@@ -113,15 +114,26 @@ const SignUpForm = () => {
 					</Typography>
 					<form className={classes.form} noValidate onSubmit={event => {
 						event.preventDefault()
-						const signUpCall = async (email, username, password, setLoading, setSuccesfulSignUp, setShowFailedSignUpToast) => {
+						const signUpCall = async (name, email, username, password, setLoading, setSuccesfulSignUp, setShowFailedSignUpToast) => {
 							setLoading(true)
-							await _signUp(email, username, password, setSuccesfulSignUp, setShowFailedSignUpToast)
+							await _signUp(name, email, username, password, setSuccesfulSignUp, setShowFailedSignUpToast)
 							setLoading(false)
 						}
 
-						signUpCall(email, username, password, setLoading, setSuccesfulSignUp, setShowFailedSignUpToast)
+						signUpCall(name, email, username, password, setLoading, setSuccesfulSignUp, setShowFailedSignUpToast)
 						clearForm()
 					}}>
+						<TextField
+							value={name}
+							variant="outlined"
+							margin="normal"
+							required
+							fullWidth
+							id="name"
+							label="Name"
+							name="name"
+							onChange={({ target }) => { setName(target.value) }}
+						/>
 						<TextField
 							value={email}
 							variant="outlined"
