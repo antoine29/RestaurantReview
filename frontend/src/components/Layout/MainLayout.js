@@ -31,7 +31,7 @@ const MainLayout = ({ component: Component, user, ...props}) => {
         <LeftDrawer user={user} open={openLeftDrawer} setOpenDrawer={setOpenLeftDrawer}/>
         <TopBar title="RestaurantReview" setOpenDrawer={setOpenLeftDrawer}>
           <main>
-            <Component setToastState={setToastState} setLoadingModal={setLoadingModal}/>
+            <Component user={user} setToastState={setToastState} setLoadingModal={setLoadingModal}/>
           </main>
         </TopBar>
       </Container>
