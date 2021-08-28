@@ -83,14 +83,17 @@ restaurantsRouter.post('/', async (req, res) => {
 restaurantsRouter.post('/:id/reviews', async (req, res) => {
 	try {
 		const restaurant = await GetRestaurant(req.params.id)
-		if (!restaurant) return res.status(404).json({ error: error.message })
+		if (!restaurant) return res.status(404).json({ error: 'Restaurant not found' })
 		const newReview = {
 			comment: req.body.comment,
 			stars: req.body.stars,
 		}
 		const savedReview = await CreateReview(newReview, restaurant._id, req.user)
 		const updatedRestaurantRating = await CalculateRestaurantRating(restaurant._id)
-		if(updatedRestaurantRating) await UpdateRestaurant(restaurant._id, {rating: updatedRestaurantRating})
+
+		const existingRestaurantReviews = restaurant.reviews
+		const updatedRestaurantReviews = existingRestaurantReviews && existingRestaurantReviews.length > 0 ? [ ...existingRestaurantReviews, savedReview._id ] : [ savedReview._id ]
+		if(updatedRestaurantRating) await UpdateRestaurant(restaurant._id, { rating: updatedRestaurantRating, reviews: updatedRestaurantReviews })
 		return res.status(200).json(savedReview)
 	}
 	catch(error){
@@ -102,14 +105,11 @@ restaurantsRouter.post('/:restaurantId/reviews/:reviewId/response', async (req, 
 	try {
         const existingUser = await GetUser(req.user.id)
         if(!existingUser) return res.status(401).json({ error: 'User not found.'})
-        if(existingUser.role !== 'owner') {
-			console.log(0)
-			return res.status(401).json({ error: 'Invalid credentials.'})
-		}
+        if(existingUser.role !== 'owner') return res.status(401).json({ error: 'Invalid credentials.'})
         
         const existingRestaurant = await GetRestaurant(req.params.restaurantId)
         if(!existingRestaurant) return res.status(401).json({ error: 'Restaurant not found.'})
-        if(JSON.stringify(existingRestaurant.owner) !== JSON.stringify(existingUser._id)) return res.status(401).json({ error: 'Invalid credentials.'})
+        if(JSON.stringify(existingRestaurant.owner.id) !== JSON.stringify(existingUser._id)) return res.status(401).json({ error: 'Invalid credentials.'})
         
         const existingReview = await GetReview(req.params.reviewId)
 		if(!existingReview) return res.status(401).json({ error: 'Review not found.'})
