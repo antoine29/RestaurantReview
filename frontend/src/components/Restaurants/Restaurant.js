@@ -18,14 +18,20 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const _addReview = async (restaurantId, comment, stars) => {
-    const storedUser = GetStoredUser()
-    const createdReview = await CreateRestaurantReview(restaurantId, comment, stars, storedUser.token)
-    return createdReview
+const _addReview = async (restaurantId, comment, stars, setToastState) => {
+    try{
+        const storedUser = GetStoredUser()
+        const createdReview = await CreateRestaurantReview(restaurantId, comment, stars, storedUser.token)
+        return createdReview
+    }
+    catch(error){
+        setToastState({severity: 'error', message: error.error})
+        return null
+    }
 }
 
-const Restaurant = () => {
-    const classes = useStyles();
+const Restaurant = ({ setToastState, setLoadingModal}) => {
+    const classes = useStyles()
     const userMatcher = useRouteMatch('/restaurants/:id')
     const [openAddReview, setOpenAddReview] = useState(false)
     const [restaurant, setRestaurant] = useState(null)
@@ -34,10 +40,12 @@ const Restaurant = () => {
     useEffect(() => {
         const restaurantId = userMatcher.params.id
         const getRestaurantInfoCall = async () => {
+            setLoadingModal(true)
             const restaurant = await GetRestaurant(restaurantId)
             const restaurantReviews = await GetRestaurantReviews(restaurantId)
             setRestaurant(restaurant)
             setRestaurantReviews(restaurantReviews)
+            setLoadingModal(false)
         }
 
         if(userMatcher.params.id) getRestaurantInfoCall()
@@ -50,8 +58,10 @@ const Restaurant = () => {
                 openAddReview={openAddReview}
                 setOpenAddReview={setOpenAddReview}
                 addReview={async (comment, stars)=>{
-                    const createdReview = await _addReview(userMatcher.params.id, comment, stars)
-                    setRestaurantReviews([...restaurantReviews, createdReview])
+                    const createdReview = await _addReview(userMatcher.params.id, comment, stars, setToastState)
+                    if(createdReview){
+                        setRestaurantReviews([...restaurantReviews, createdReview])
+                    }
                 }}
             />
             <RestaurantCard restaurant={restaurant}/>
@@ -69,17 +79,20 @@ const Restaurant = () => {
         )
     }
 
-    return (
-        <>
+    return null
+
+    // return (
+        
+        // <>
         {/* <div>
             restaurant with id: {userMatcher ? userMatcher.params.id : 'errro'}
         </div> */}
-        <div>
+        {/* <div>
             {JSON.stringify(restaurant)}
             {JSON.stringify(restaurantReviews)}
-        </div>
-        </>
-    );
+        </div> */}
+        // </>
+    // )
 }
 
 export default Restaurant
