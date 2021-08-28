@@ -4,6 +4,19 @@ import './index.css';
 import App from './App';
 import AppRouter from './AppRouter';
 import reportWebVitals from './reportWebVitals';
+import axios from 'axios'
+import { GetStoredUser } from './services/Users'
+
+axios.interceptors.request.use(request => {
+  if(request.url.includes('api')){
+    const storedToken = GetStoredUser()
+    if(storedToken && storedToken.token){
+      request.headers['Authorization'] = `bearer ${storedToken.token}`
+    }
+  }
+
+  return request
+})
 
 ReactDOM.render(
   <React.StrictMode>
