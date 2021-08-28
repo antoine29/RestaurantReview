@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const authRouter = require('express').Router()
-const { GetUserByEmail, GetUser } = require('../dao/users')
+const { GetUserByEmail, CreateUser } = require('../dao/users')
 
 authRouter.post('/signin', async (request, response) => {
 	const user = await GetUserByEmail(request.body.email)
@@ -24,12 +24,26 @@ authRouter.post('/signin', async (request, response) => {
 		})
 })
 
-authRouter.get('/token_user', async (request, response) => {
-	if(!request.token) return response.status(403).json({ error: 'mising token.' })
-	if(request.token.error) return response.status(403).json({ error: request.token.error })
-	const existingUser = await GetUser(request.token.user.id)
-	if(!existingUser) response.status(404).json({ error: "Token user not found."})
-	return response.status(200).json(existingUser)
+authRouter.post('/signup', async (request, response) => {
+	try {
+		const body = request.body
+		if (body.password === undefined || body.password.length < 3)
+			return response.status(400).json({ error: '`password` field must be defined and must be greather than 3 chars. length.' })
+
+		const newUser = {
+			name: body.name,
+			username: body.username,
+			email: body.email,
+			name: body.name,
+			password: body.password
+		}
+
+		const savedUser = await CreateUser(newUser)
+		return response.json(savedUser)
+	}
+	catch(error) {
+		return response.status(400).json({ error: error.message })
+	}
 })
 
 const checkUserPassword = async (password, hashedPassword) => {
