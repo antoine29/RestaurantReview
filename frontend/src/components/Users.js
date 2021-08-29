@@ -15,7 +15,7 @@ import {
 	Button
 } from './UIComponents'
 
-import { GetUsers, DeleteUser } from '../services/Users'
+import { GetUsers, DeleteUser, UpdateUser } from '../services/Users'
 import DeleteConfirmationDialog from './Users/DeleteConfirmationDIalog'
 import UpdateUserDialog from './Users/UpdateUserDialog'
 
@@ -68,8 +68,22 @@ const Users = ({ setToastState, setLoadingModal }) => {
 	const [openUpdateUser, setOpenUpdateUser] = useState(false)
 	const [userToUpdate, setUserToUpdate] = useState(null)
 
-	const onUpdateUser = () => {
-		console.log('updating user:', userToUpdate)
+	const onUpdateUser = (updatedUser) => {
+		console.log('updating user:', updatedUser)
+		const updateUserCall = async () => {
+			setLoadingModal(true)
+			try{
+				await UpdateUser(userToUpdate.id, updatedUser)
+				const users = await GetUsers()
+				setUsers(users)
+			}
+			catch(error){
+				setToastState({severity: 'error', message: 'Error updating user'})
+			}
+			setLoadingModal(false)
+		}
+
+		updateUserCall()
 	}
 
 	const onDeleteUser = () => {
@@ -84,14 +98,11 @@ const Users = ({ setToastState, setLoadingModal }) => {
 			catch(error){
 				setToastState({severity: 'error', message: 'Error deleting user'})
 			}
+
 			setLoadingModal(false)
 		}
 
 		deleteUserCall()
-	}
-
-	const onEditUser = (userId) => {
-		console.log('editing user', userId)
 	}
 
 	useEffect(() => {
@@ -106,7 +117,7 @@ const Users = ({ setToastState, setLoadingModal }) => {
 
 	return (
 		<>
-			<UpdateUserDialog openUpdateUser={openUpdateUser} setOpenUpdateUser={setOpenUpdateUser} updateUser={openUpdateUser} user={userToUpdate}/>
+			<UpdateUserDialog openUpdateUser={openUpdateUser} setOpenUpdateUser={setOpenUpdateUser} updateUser={onUpdateUser} user={userToUpdate}/>
 			<DeleteConfirmationDialog openDeleteDialog={openDeleteDialog} setOpenDeleteDialog={setOpenDeleteDialog} onDeleteUser={onDeleteUser} />
 			<Paper className={classes.root}>
 				<TableContainer className={classes.container}>
@@ -132,11 +143,11 @@ const Users = ({ setToastState, setLoadingModal }) => {
 												{user[column.id]}
 											</TableCell> : null
 										)}
-										<TableCell align="left" onClick={() => {
-												setUserToUpdate(user)
+										<TableCell align="left" >
+											<IconButton aria-label="edit" onClick={() => {
+												setUserToUpdate({...user})
 												setOpenUpdateUser(true)
 											}}>
-											<IconButton aria-label="delete">
 												<EditIcon />
 											</IconButton>
 											<IconButton aria-label="delete" onClick={() => {

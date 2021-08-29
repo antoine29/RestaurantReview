@@ -56,3 +56,8 @@ export const GetUsers = async () => {
 export const DeleteUser = async userId => {
   const response = await axios.delete(`${baseUrl}/api/users/${userId}`)
 }
+
+export const UpdateUser = async (userId, updatedUser) => {
+  const response = await axios.patch(`${baseUrl}/api/users/${userId}`, updatedUser)
+  return response.data
+}
