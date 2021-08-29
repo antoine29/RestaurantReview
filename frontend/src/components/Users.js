@@ -17,6 +17,7 @@ import {
 
 import { GetUsers, DeleteUser } from '../services/Users'
 import DeleteConfirmationDialog from './Users/DeleteConfirmationDIalog'
+import UpdateUserDialog from './Users/UpdateUserDialog'
 
 const columns = [
 	{ id: 'avatar', label: 'Avatar', maxWidth: 20, align: 'left' },
@@ -60,8 +61,16 @@ const useStyles = makeStyles({
 const Users = ({ setToastState, setLoadingModal }) => {
 	const classes = useStyles()
 	const [users, setUsers] = useState([])
+	
 	const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
 	const [userToDelete, setUserToDelete] = useState(null)
+
+	const [openUpdateUser, setOpenUpdateUser] = useState(false)
+	const [userToUpdate, setUserToUpdate] = useState(null)
+
+	const onUpdateUser = () => {
+		console.log('updating user:', userToUpdate)
+	}
 
 	const onDeleteUser = () => {
 		console.log('deleting user', userToDelete)
@@ -97,6 +106,7 @@ const Users = ({ setToastState, setLoadingModal }) => {
 
 	return (
 		<>
+			<UpdateUserDialog openUpdateUser={openUpdateUser} setOpenUpdateUser={setOpenUpdateUser} updateUser={openUpdateUser} user={userToUpdate}/>
 			<DeleteConfirmationDialog openDeleteDialog={openDeleteDialog} setOpenDeleteDialog={setOpenDeleteDialog} onDeleteUser={onDeleteUser} />
 			<Paper className={classes.root}>
 				<TableContainer className={classes.container}>
@@ -122,11 +132,14 @@ const Users = ({ setToastState, setLoadingModal }) => {
 												{user[column.id]}
 											</TableCell> : null
 										)}
-										<TableCell align="left" >
+										<TableCell align="left" onClick={() => {
+												setUserToUpdate(user)
+												setOpenUpdateUser(true)
+											}}>
 											<IconButton aria-label="delete">
 												<EditIcon />
 											</IconButton>
-											<IconButton aria-label="delete" onClick={ () => {
+											<IconButton aria-label="delete" onClick={() => {
 												setUserToDelete(user.id)
 												setOpenDeleteDialog(true)
 											}}>

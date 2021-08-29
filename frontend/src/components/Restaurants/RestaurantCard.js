@@ -8,7 +8,9 @@ import {
   Grid,
   Box,
   Rating,
-  RoomIcon
+  RoomIcon,
+  IconButton,
+  DeleteIcon
 } from '../UIComponents'
 
 const useStyles = makeStyles((theme) => ({
@@ -57,7 +59,7 @@ const ResponsedReviewsLabel = reviews => {
   return 0
 }
 
-const RestaurantCard = ({ restaurant, ownerView }) => {
+const RestaurantCard = ({ restaurant, ownerView, adminView }) => {
   const classes = useStyles()
   const history = useHistory()
 
@@ -95,6 +97,13 @@ const RestaurantCard = ({ restaurant, ownerView }) => {
           Pending reviews { ResponsedReviewsLabel(restaurant.reviews)}
         </Grid>}
       </Grid>
+      {adminView &&
+      <IconButton aria-label="delete" onClick={ () => {
+				/* setUserToDelete(user.id)
+				setOpenDeleteDialog(true) */
+			}}>
+				<DeleteIcon />
+			</IconButton>}
     </Paper>
   )
 }

@@ -36,10 +36,24 @@ const DeleteUser = async userId => {
 	await User.deleteOne({ _id: userId})
 }
 
+const UpdateUser = async (userId, updatedUser) => {
+	console.log('updated user:', updatedUser)
+	const existingUser = await GetUser(userId)
+	console.log('existing user:', existingUser)
+	if(updatedUser.name !== undefined) existingUser.name = updatedUser.name
+	if(updatedUser.username !== undefined) existingUser.username = updatedUser.username
+	if(updatedUser.email !== undefined) existingUser.email = updatedUser.email
+	if(updatedUser.role !== undefined) existingUser.role = updatedUser.role
+	await existingUser.save()
+
+	return existingUser
+}
+
 module.exports = {
 	GetUsers,
 	GetUser,
 	GetUserByEmail,
 	CreateUser,
-	DeleteUser
+	DeleteUser,
+	UpdateUser
 }
