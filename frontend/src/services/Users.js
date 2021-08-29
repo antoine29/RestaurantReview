@@ -52,3 +52,7 @@ export const GetUsers = async () => {
   const response = await axios.get(`${baseUrl}/api/users`)
   return response.data
 }
+
+export const DeleteUser = async userId => {
+  const response = await axios.delete(`${baseUrl}/api/users/${userId}`)
+}
