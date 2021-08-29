@@ -6,9 +6,9 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-} from '../UIComponents'
+} from './UIComponents'
 
-const DeleteConfirmationDialog = ({openDeleteDialog, setOpenDeleteDialog, onDeleteUser}) => {
+const DeleteConfirmationDialog = ({openDeleteDialog, setOpenDeleteDialog, onConfirmation, deleteDialog}) => {
   return (
     <div>
       <Dialog
@@ -17,7 +17,7 @@ const DeleteConfirmationDialog = ({openDeleteDialog, setOpenDeleteDialog, onDele
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Delete user?"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{deleteDialog}</DialogTitle>
         {/* <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Are you sure?
@@ -30,7 +30,7 @@ const DeleteConfirmationDialog = ({openDeleteDialog, setOpenDeleteDialog, onDele
           <Button
             onClick={() => {
               setOpenDeleteDialog(false)
-              onDeleteUser()}}
+              onConfirmation()}}
             color="primary" autoFocus >
             OK
           </Button>

@@ -16,7 +16,7 @@ import {
 } from './UIComponents'
 
 import { GetUsers, DeleteUser, UpdateUser } from '../services/Users'
-import DeleteConfirmationDialog from './Users/DeleteConfirmationDIalog'
+import DeleteConfirmationDialog from './DeleteConfirmationDIalog'
 import UpdateUserDialog from './Users/UpdateUserDialog'
 
 const columns = [
@@ -61,7 +61,7 @@ const useStyles = makeStyles({
 const Users = ({ setToastState, setLoadingModal }) => {
 	const classes = useStyles()
 	const [users, setUsers] = useState([])
-	
+
 	const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
 	const [userToDelete, setUserToDelete] = useState(null)
 
@@ -72,13 +72,13 @@ const Users = ({ setToastState, setLoadingModal }) => {
 		console.log('updating user:', updatedUser)
 		const updateUserCall = async () => {
 			setLoadingModal(true)
-			try{
+			try {
 				await UpdateUser(userToUpdate.id, updatedUser)
 				const users = await GetUsers()
 				setUsers(users)
 			}
-			catch(error){
-				setToastState({severity: 'error', message: 'Error updating user'})
+			catch (error) {
+				setToastState({ severity: 'error', message: 'Error updating user' })
 			}
 			setLoadingModal(false)
 		}
@@ -90,13 +90,13 @@ const Users = ({ setToastState, setLoadingModal }) => {
 		console.log('deleting user', userToDelete)
 		const deleteUserCall = async () => {
 			setLoadingModal(true)
-			try{
+			try {
 				await DeleteUser(userToDelete)
 				const users = await GetUsers()
 				setUsers(users)
 			}
-			catch(error){
-				setToastState({severity: 'error', message: 'Error deleting user'})
+			catch (error) {
+				setToastState({ severity: 'error', message: 'Error deleting user' })
 			}
 
 			setLoadingModal(false)
@@ -117,8 +117,8 @@ const Users = ({ setToastState, setLoadingModal }) => {
 
 	return (
 		<>
-			<UpdateUserDialog openUpdateUser={openUpdateUser} setOpenUpdateUser={setOpenUpdateUser} updateUser={onUpdateUser} user={userToUpdate}/>
-			<DeleteConfirmationDialog openDeleteDialog={openDeleteDialog} setOpenDeleteDialog={setOpenDeleteDialog} onDeleteUser={onDeleteUser} />
+			<UpdateUserDialog openUpdateUser={openUpdateUser} setOpenUpdateUser={setOpenUpdateUser} updateUser={onUpdateUser} user={userToUpdate} />
+			<DeleteConfirmationDialog openDeleteDialog={openDeleteDialog} setOpenDeleteDialog={setOpenDeleteDialog} onConfirmation={onDeleteUser} deleteDialog="Delete user ?" />
 			<Paper className={classes.root}>
 				<TableContainer className={classes.container}>
 					<Table stickyHeader aria-label="sticky table">
@@ -145,7 +145,7 @@ const Users = ({ setToastState, setLoadingModal }) => {
 										)}
 										<TableCell align="left" >
 											<IconButton aria-label="edit" onClick={() => {
-												setUserToUpdate({...user})
+												setUserToUpdate({ ...user })
 												setOpenUpdateUser(true)
 											}}>
 												<EditIcon />
@@ -157,7 +157,7 @@ const Users = ({ setToastState, setLoadingModal }) => {
 												<DeleteIcon />
 											</IconButton>
 										</TableCell>
-									</>	
+									</>
 								</TableRow>)}
 						</TableBody>
 					</Table>
