@@ -1,23 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import { useRouteMatch } from 'react-router-dom'
-import { GetUserRestaurants } from '../../services/Restaurants';
-import { makeStyles } from '../UIComponents'
-import RestaurantCard from './RestaurantCard';
+import { GetUserRestaurants } from '../../services/Restaurants'
+import RestaurantCard from './RestaurantCard'
 
-const useStyles = makeStyles((theme) => ({
-    mainGrid: {
-        marginTop: theme.spacing(3),
-    },
-}))
-
-const OwnerRestaurants = () => {
+const OwnerRestaurants = ({setLoadingModal}) => {
     const userMatcher = useRouteMatch('/owner/:id/restaurants')
     const [restaurants, setRestaurants] = useState([])
     useEffect(() => {
         const userId = userMatcher.params.id
         const getRestaurantsCall = async () => {
+            setLoadingModal(true)
             const restaurants = await GetUserRestaurants(userId)
             setRestaurants(restaurants)
+            setLoadingModal(false)
         }
 
         getRestaurantsCall()
