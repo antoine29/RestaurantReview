@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouteMatch, useHistory } from 'react-router-dom'
-import { GetRestaurant, CreateRestaurantReview, DeleteRestaurant } from '../../services/Restaurants';
+import { GetRestaurant, CreateRestaurantReview, DeleteRestaurant, UpdateRestaurant } from '../../services/Restaurants';
 import {
 	makeStyles,
 	Button,
@@ -14,6 +14,7 @@ import RestaurantReviewCard from './RestaurantReviewCard';
 import AddReviewDialog from './AddReviewDialog';
 
 import DeleteConfirmationDialog from '../DeleteConfirmationDIalog';
+import UpdateRestaurantDialog from './UpdateRestaurantDialog';
 
 const useStyles = makeStyles((theme) => ({
 	mainGrid: {
@@ -44,6 +45,8 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 	const [reloadRestaurant, setReloadRestaurant] = useState(false)
 
 	const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
+	const [openUpdateRestaurantDialog, setOpenUpdateRestaurantDialog] = useState(false)
+	const [restaurantToUpdate, setRestaurantToUpdate] = useState(null)
 
 	const getRestaurantCall = async (restaurantId) => {
 		setLoadingModal(true)
@@ -89,9 +92,31 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 		deleteRestaurantCall()
 	}
 
-	if (!!restaurant) {
+	const updateRestaurant = restaurant => {
+		console.log('updating restaurant:', restaurant.id, restaurant)
+		const updateRestaurantCall = async () => {
+			setLoadingModal(true)
+			try {
+				await UpdateRestaurant(restaurant.id, {
+					name: restaurant.name,
+					address: restaurant.address,
+					url: restaurant.url,
+				})
+				setReloadRestaurant(true)
+			}
+			catch(error) {
+				setToastState({ severity: 'error', message: 'Error updating restaurant.' })
+			}
+			setLoadingModal(false)
+		}
+
+		updateRestaurantCall()
+	}
+
+	if (restaurant) {
 		return (
 			<>
+				<UpdateRestaurantDialog openUpdateRestaurant={openUpdateRestaurantDialog} setOpenUpdateRestaurant={setOpenUpdateRestaurantDialog} onUpdate={updateRestaurant} restaurant={restaurantToUpdate}/>
 				<DeleteConfirmationDialog openDeleteDialog={openDeleteDialog} setOpenDeleteDialog={setOpenDeleteDialog} onConfirmation={deleteRestaurant} deleteDialog="Delete restaurant ?"  />
 				<AddReviewDialog
 					openAddReview={openAddReview}
@@ -116,12 +141,16 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 						>
 							Delete
 						</Button>
-						{/* This Button uses a Font Icon, see the installation instructions in the Icon component docs. */}
+						{/* ToDo: this button seems not be working at the first click */}
 						<Button
 							variant="contained"
 							color="primary"
 							className={classes.button}
 							startIcon={<EditIcon />}
+							onClick={()=>{
+								setRestaurantToUpdate({ ...restaurant })
+								setOpenUpdateRestaurantDialog(true)
+							}}
 						>
 							Edit
 						</Button>

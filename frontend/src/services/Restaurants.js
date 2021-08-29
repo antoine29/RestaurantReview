@@ -22,6 +22,11 @@ export const DeleteRestaurant = async (id) => {
   return response.data
 }
 
+export const UpdateRestaurant = async (restaurantId, updatedRestaurant) => {
+  const response = await axios.patch(`${baseUrl}/api/restaurants/${restaurantId}`, updatedRestaurant)
+  return response.data
+}
+
 export const GetRestaurantReviews = async (id) => {
   const response = await axios.get(`${baseUrl}/api/restaurants/${id}/reviews`)
   return response.data
