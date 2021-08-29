@@ -50,6 +50,29 @@ restaurantsRouter.delete('/:id', async (req, res) => {
 	}
 })
 
+restaurantsRouter.patch('/:id', async (req, res) => {
+	try{
+		const restaurantId = req.params.id
+		const restaurant = await GetRestaurant(restaurantId)
+		if(!restaurant) return res.status(404).json({ error: `Restaurant ${restaurantId} not found.`})
+
+		const existingUser = await GetUser(req.user.id)
+		if(existingUser.role !== 'admin' && JSON.stringify(restaurant.owner._id) !== JSON.stringify(existingUser._id)) return res.status(401).json({ error: 'Not allowed.' })
+
+		const updatedRestaurant = {
+			name: req.body.name,
+			address: req.body.address,
+			url: req.body.url,
+		}
+
+		const savedRestaurant = await UpdateRestaurant(restaurantId, updatedRestaurant)
+		return res.status(200).json(savedRestaurant)
+	}
+	catch(error){
+		return res.status(400).json({ error: error.message })
+	}
+})
+
 // ToDo: by adding reviews[] to rest model => maybe not util, delete then
 restaurantsRouter.get('/:id/reviews', async (req, res) => {
 	try {
