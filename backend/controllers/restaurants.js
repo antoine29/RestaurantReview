@@ -40,7 +40,7 @@ restaurantsRouter.delete('/:id', async (req, res) => {
 		if(!restaurant) return res.status(404).json({ error: `Restaurant ${restaurantId} not found.`})
 
 		const existingUser = await GetUser(req.user.id)
-		if(JSON.stringify(restaurant.owner._id) !== JSON.stringify(existingUser._id)) return res.status(401).json({ error: 'Not allowed.' })
+		if(existingUser.role !== 'admin' && JSON.stringify(restaurant.owner._id) !== JSON.stringify(existingUser._id)) return res.status(401).json({ error: 'Not allowed.' })
 
 		await DeleteRestaurant(restaurant._id)
 		return res.sendStatus(200)
