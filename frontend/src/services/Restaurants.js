@@ -22,7 +22,7 @@ export const GetRestaurantReviews = async (id) => {
   return response.data
 }
 
-export const CreateRestaurantReview = async (id, comment, stars, token) => {
+export const CreateRestaurantReview = async (id, comment, stars) => {
   try{
     const response = await axios({
       method: 'post',
@@ -31,6 +31,21 @@ export const CreateRestaurantReview = async (id, comment, stars, token) => {
     })
     
     return response.data
+  }
+  catch(error){
+    throw error.response.data;
+  }
+}
+
+export const CreateRestaurantReviewResponse = async (restaurantId, reviewId, response) => {
+  try{
+    const apiResponse = await axios({
+      method: 'post',
+      url: `${baseUrl}/api/restaurants/${restaurantId}/reviews/${reviewId}/response`,
+      data: response,
+    })
+    
+    return apiResponse
   }
   catch(error){
     throw error.response.data;
