@@ -17,6 +17,11 @@ export const GetRestaurant = async (id) => {
   return response.data
 }
 
+export const DeleteRestaurant = async (id) => {
+  const response = await axios.delete(`${baseUrl}/api/restaurants/${id}`)
+  return response.data
+}
+
 export const GetRestaurantReviews = async (id) => {
   const response = await axios.get(`${baseUrl}/api/restaurants/${id}/reviews`)
   return response.data
