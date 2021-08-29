@@ -53,10 +53,17 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import RestaurantIcon from '@material-ui/icons/Restaurant'
 import AnnouncementIcon from '@material-ui/icons/Announcement'
 import RateReviewIcon from '@material-ui/icons/RateReview'
-import { deepOrange, deepPurple } from '@material-ui/core/colors';
-import Rating from '@material-ui/lab/Rating';
-import RoomIcon from '@material-ui/icons/Room';
-import Icon from '@material-ui/core/Icon';
+import { deepOrange, deepPurple } from '@material-ui/core/colors'
+import Rating from '@material-ui/lab/Rating'
+import RoomIcon from '@material-ui/icons/Room'
+import Icon from '@material-ui/core/Icon'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableContainer from '@material-ui/core/TableContainer'
+import TableHead from '@material-ui/core/TableHead'
+import TablePagination from '@material-ui/core/TablePagination'
+import TableRow from '@material-ui/core/TableRow'
 
 export {
     Avatar,
@@ -118,5 +125,12 @@ export {
     deepPurple,
     Rating,
     RoomIcon,
-    Icon
+    Icon,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TablePagination,
+    TableRow,
 }

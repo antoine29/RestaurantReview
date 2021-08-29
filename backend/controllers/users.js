@@ -3,6 +3,7 @@ const { GetUser, GetUsers } = require('../dao/users')
 const { GetUserRestaurants } = require('../dao/restaurants')
 
 usersRouter.get('/', async (request, response) => {
+	// ToDo: only an admin user can get this
 	const users = await GetUsers()
 	response.json(users.map(u => u.toJSON()))
 })

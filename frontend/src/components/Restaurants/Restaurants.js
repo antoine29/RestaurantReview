@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { GetRestaurants } from '../../services/Restaurants'
 import RestaurantCard from './RestaurantCard'
 
-const Restaurants = ({setToastState, setLoadingModal}) => {
+const Restaurants = ({ setToastState, setLoadingModal }) => {
     const [restaurants, setRestaurants] = useState([])
     useEffect(() => {
         const getRestaurantsCall = async () => {

@@ -47,3 +47,8 @@ export const SetStoredUser = (user) => {
   window.localStorage.setItem(localUserKey, JSON.stringify(user))
   return GetStoredUser()
 }
+
+export const GetUsers = async () => {
+  const response = await axios.get(`${baseUrl}/api/users`)
+  return response.data
+}
