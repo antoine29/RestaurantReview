@@ -8,9 +8,7 @@ import {
   Grid,
   Box,
   Rating,
-  RoomIcon,
-  IconButton,
-  DeleteIcon
+  RoomIcon
 } from '../UIComponents'
 
 const useStyles = makeStyles((theme) => ({
@@ -43,14 +41,17 @@ const useStyles = makeStyles((theme) => ({
   highLightedText: {
     backgroundColor: '#c0ffc8',
     // padding: theme.spacing(-0.5)
-  }
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
 }))
 
 const ResponsedReviewsLabel = reviews => {
-  if(reviews && reviews.length > 0){
+  if (reviews && reviews.length > 0) {
     let counter = 0
     reviews.forEach(review => {
-      if(!review.response) counter++
+      if (!review.response) counter++
     })
 
     return counter
@@ -97,13 +98,6 @@ const RestaurantCard = ({ restaurant, ownerView, adminView }) => {
           Pending reviews { ResponsedReviewsLabel(restaurant.reviews)}
         </Grid>}
       </Grid>
-      {adminView &&
-      <IconButton aria-label="delete" onClick={ () => {
-				/* setUserToDelete(user.id)
-				setOpenDeleteDialog(true) */
-			}}>
-				<DeleteIcon />
-			</IconButton>}
     </Paper>
   )
 }
