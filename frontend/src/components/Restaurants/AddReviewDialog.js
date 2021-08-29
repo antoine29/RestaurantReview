@@ -67,7 +67,6 @@ const AddReviewDialog = ({ openAddReview, setOpenAddReview, addReview }) => {
 				</Button>
 			</DialogActions>
 		</Dialog>
-
 	)
 }
 
