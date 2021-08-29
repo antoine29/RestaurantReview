@@ -1,15 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import {
     makeStyles,
     Typography,
     Grid,
     Card,
-    CardActionArea,
     CardContent,
-    CardMedia,
-    Hidden
+    Button
 } from '../UIComponents'
+
+import AddReviewResponseDialog from './AddReviewResponseDialog'
+import { CreateRestaurantReviewResponse } from '../../services/Restaurants'
 
 const useStyles = makeStyles({
   card: {
@@ -21,26 +22,36 @@ const useStyles = makeStyles({
   cardMedia: {
     width: 160,
   },
-});
+})
 
+const _addReviewResponse = async (restaurantId, reviewId, responseString, setLoadingModal, setToastState, setReloadRestaurant) => {
+  setLoadingModal(true)
+  try{
+    await CreateRestaurantReviewResponse(restaurantId, reviewId, { response: responseString })
+    setReloadRestaurant(true)
+  }
+  catch(error){
+    setToastState({severity: 'error', message: error.error})
+    console.log(error)
+  }
+  setLoadingModal(false)
+}
+const RestaurantReviewCard = ({review, ownerView, setLoadingModal, setToastState, setReloadRestaurant}) => {
+  const [openAddResponse, setOpenAddResponse] = useState(false)
+  const [reviewIdToResponse, setReviewIdToResponse] = useState(null)
+  const classes = useStyles()
 
-// [
-//     {
-//       "comment": "comment left for rest 00",
-//       "stars": 5,
-//       "restaurant": "6124257599fe4594bab728b5",
-//       "user": {
-//         "username": "owner0",
-//         "email": "owner0",
-//         "id": "6124257599fe4594bab728a6"
-//       },
-//       "id": "6124257699fe4594bab728c1"
-//     }
-//   ]
-const RestaurantReviewCard = ({review}) => {
-  const classes = useStyles();
+  const sendResponse = (response) => {
+    _addReviewResponse(review.restaurant, reviewIdToResponse, response, setLoadingModal, setToastState, setReloadRestaurant)
+  }
 
   return (
+    <>
+    <AddReviewResponseDialog
+      openAddResponse={openAddResponse}
+      setOpenAddResponse={setOpenAddResponse}
+      sendResponse={sendResponse}
+    />
     <Grid item xs={12} md={6}>
       {/* <CardActionArea component="a" href="#"> */}
         <Card className={classes.card}>
@@ -55,9 +66,19 @@ const RestaurantReviewCard = ({review}) => {
               <Typography variant="subtitle1" paragraph>
                 {review.comment}
               </Typography>
-              {/* <Typography variant="subtitle1" color="primary">
-                Continue reading...
-              </Typography> */}
+              {!!review.response &&
+              <Typography variant="subtitle1" paragraph>
+                @{review.response.user.username}: {review.response.response}                    
+              </Typography>
+              }
+              {!review.response && ownerView &&
+              <Button onClick={()=>{
+                setReviewIdToResponse(review.id)
+                setOpenAddResponse(true)
+              }}>
+                response
+              </Button>
+              }
             </CardContent>
           </div>
           {/* <Hidden xsDown>
@@ -66,6 +87,7 @@ const RestaurantReviewCard = ({review}) => {
         </Card>
       {/* </CardActionArea> */}
     </Grid>
+    </>
   )
 }
 
@@ -73,4 +95,4 @@ export default RestaurantReviewCard
 
 RestaurantReviewCard.propTypes = {
   review: PropTypes.object,
-};
+}

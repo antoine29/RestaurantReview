@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouteMatch } from 'react-router-dom'
-import { GetRestaurant, GetRestaurantReviews, CreateRestaurantReview } from '../../services/Restaurants';
-import { GetStoredUser } from '../../services/Users';
+import { GetRestaurant, CreateRestaurantReview } from '../../services/Restaurants';
 import {
     makeStyles,
     Button,
@@ -20,8 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 const _addReview = async (restaurantId, comment, stars, setToastState) => {
     try{
-        const storedUser = GetStoredUser()
-        const createdReview = await CreateRestaurantReview(restaurantId, comment, stars, storedUser.token)
+        const createdReview = await CreateRestaurantReview(restaurantId, comment, stars)
         return createdReview
     }
     catch(error){
@@ -30,28 +28,34 @@ const _addReview = async (restaurantId, comment, stars, setToastState) => {
     }
 }
 
-const Restaurant = ({ setToastState, setLoadingModal}) => {
+const signedUserIsTheRestaurantOwner = (restaurantOwnerId, signedUserId) => restaurantOwnerId===signedUserId
+
+const Restaurant = ({ setToastState, setLoadingModal, user }) => {
     const classes = useStyles()
     const userMatcher = useRouteMatch('/restaurants/:id')
     const [openAddReview, setOpenAddReview] = useState(false)
     const [restaurant, setRestaurant] = useState(null)
-    const [restaurantReviews, setRestaurantReviews] = useState(null)
+    const [reloadRestaurant, setReloadRestaurant] = useState(false)
+    
+    const getRestaurantInfoCall = async (restaurantId) => {
+        setLoadingModal(true)
+        const restaurant = await GetRestaurant(restaurantId)
+        setRestaurant(restaurant)
+        setLoadingModal(false)            
+    }
 
     useEffect(() => {
         const restaurantId = userMatcher.params.id
-        const getRestaurantInfoCall = async () => {
-            setLoadingModal(true)
-            const restaurant = await GetRestaurant(restaurantId)
-            const restaurantReviews = await GetRestaurantReviews(restaurantId)
-            setRestaurant(restaurant)
-            setRestaurantReviews(restaurantReviews)
-            setLoadingModal(false)
-        }
-
-        if(userMatcher.params.id) getRestaurantInfoCall()
+        if(userMatcher.params.id) getRestaurantInfoCall(restaurantId)
     }, [userMatcher.params.id])
 
-    if(!!restaurant && !! restaurantReviews){
+    useEffect(()=>{
+        const restaurantId = userMatcher.params.id
+        if(reloadRestaurant && userMatcher.params.id) getRestaurantInfoCall(restaurantId)
+        setReloadRestaurant(false)
+    }, [reloadRestaurant])
+
+    if(!!restaurant){
         return (
             <>
             <AddReviewDialog
@@ -60,11 +64,13 @@ const Restaurant = ({ setToastState, setLoadingModal}) => {
                 addReview={async (comment, stars)=>{
                     const createdReview = await _addReview(userMatcher.params.id, comment, stars, setToastState)
                     if(createdReview){
-                        setRestaurantReviews([...restaurantReviews, createdReview])
+                        const updatedRestaurant = await GetRestaurant(userMatcher.params.id)
+                        setRestaurant(updatedRestaurant)
                     }
                 }}
             />
             <RestaurantCard restaurant={restaurant}/>
+            {restaurant.owner && user && !signedUserIsTheRestaurantOwner(restaurant.owner.id, user.id) &&
             <Button
               variant="contained"
               color="primary"
@@ -74,25 +80,20 @@ const Restaurant = ({ setToastState, setLoadingModal}) => {
             >
               Add review
             </Button>
-            {restaurantReviews.map(review => <RestaurantReviewCard review={review}/>)}
+            }
+            {restaurant.reviews && restaurant.reviews.length > 0 && restaurant.reviews.map(review =>
+            <RestaurantReviewCard
+                review={review}
+                ownerView={signedUserIsTheRestaurantOwner(restaurant.owner.id, user.id)}
+                setLoadingModal={setLoadingModal}
+                setToastState={setToastState}
+                setReloadRestaurant={setReloadRestaurant}
+            />)}
             </>
         )
     }
 
     return null
-
-    // return (
-        
-        // <>
-        {/* <div>
-            restaurant with id: {userMatcher ? userMatcher.params.id : 'errro'}
-        </div> */}
-        {/* <div>
-            {JSON.stringify(restaurant)}
-            {JSON.stringify(restaurantReviews)}
-        </div> */}
-        // </>
-    // )
 }
 
 export default Restaurant
