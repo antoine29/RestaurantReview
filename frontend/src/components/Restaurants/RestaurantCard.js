@@ -1,12 +1,11 @@
-import React from 'react';
+import React from 'react'
 import { useHistory } from 'react-router-dom'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import {
   makeStyles,
   Paper,
   Typography,
   Grid,
-  Link,
   Box,
   Rating,
   RoomIcon
@@ -43,20 +42,24 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#c0ffc8',
     // padding: theme.spacing(-0.5)
   }
-}));
+}))
 
-const RestaurantCard = ({ restaurant }) => {
+const ResponsedReviewsLabel = reviews => {
+  if(reviews && reviews.length > 0){
+    let counter = 0
+    reviews.forEach(review => {
+      if(!review.response) counter++
+    })
+
+    return counter
+  }
+
+  return 0
+}
+
+const RestaurantCard = ({ restaurant, ownerView }) => {
   const classes = useStyles()
   const history = useHistory()
-
-  const mainFeaturedPost = {
-    title: 'Title of a longer featured blog post',
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: 'https://source.unsplash.com/random',
-    imgText: 'main image description',
-    linkText: 'Continue reading…',
-  };
 
   return (
     <Paper
@@ -87,13 +90,17 @@ const RestaurantCard = ({ restaurant }) => {
             </Box>
           </div>
         </Grid>
+        { ownerView && 
+        <Grid item style={{ backgroundColor:'black' }}>
+          Pending reviews { ResponsedReviewsLabel(restaurant.reviews)}
+        </Grid>}
       </Grid>
     </Paper>
-  );
+  )
 }
 
 export default RestaurantCard
 
 RestaurantCard.propTypes = {
   post: PropTypes.object,
-};
+}
