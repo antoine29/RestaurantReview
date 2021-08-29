@@ -32,9 +32,14 @@ const CreateUser = async (user) => {
 	return savedUser
 }
 
+const DeleteUser = async userId => {
+	await User.deleteOne({ _id: userId})
+}
+
 module.exports = {
 	GetUsers,
 	GetUser,
 	GetUserByEmail,
-	CreateUser
+	CreateUser,
+	DeleteUser
 }
