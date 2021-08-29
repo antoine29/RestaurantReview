@@ -45,7 +45,22 @@ export const CreateRestaurantReviewResponse = async (restaurantId, reviewId, res
       data: response,
     })
     
-    return apiResponse
+    return apiResponse.data
+  }
+  catch(error){
+    throw error.response.data;
+  }
+}
+
+export const CreateRestaurant = async restaurant => {
+  try{
+    const apiResponse = await axios({
+      method: 'post',
+      url: `${baseUrl}/api/restaurants`,
+      data: restaurant,
+    })
+    
+    return apiResponse.data
   }
   catch(error){
     throw error.response.data;
