@@ -18,11 +18,6 @@ const DeleteConfirmationDialog = ({openDeleteDialog, setOpenDeleteDialog, onConf
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">{deleteDialog}</DialogTitle>
-        {/* <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure?
-          </DialogContentText>
-        </DialogContent> */}
         <DialogActions>
           <Button onClick={()=>{setOpenDeleteDialog(false);}} color="primary">
             Cancel

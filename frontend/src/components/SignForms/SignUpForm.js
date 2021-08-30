@@ -13,10 +13,10 @@ import {
 	makeStyles,
 	CssBaseline,
 } from '../UIComponents'
-import Toast from '../Toast'
-import BackDropSpinner from '../BackDropSpinner'
-import SimpleBackDropDialog from '../SimpleBackDropDialog'
-import CopyrightLabel from '../CopyrightLabel'
+import Toast from '../Layout/Toast'
+import BackDropSpinner from '../Layout/BackDropSpinner'
+import SimpleBackDropDialog from './SimpleBackDropDialog'
+import CopyrightLabel from '../Layout/CopyrightLabel'
 
 const useStyles = makeStyles((theme) => ({
 	root: {

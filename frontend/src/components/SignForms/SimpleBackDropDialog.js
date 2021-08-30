@@ -6,7 +6,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle
-} from './UIComponents'
+} from '../UIComponents'
 
 const SimpleBackDropDialog = ({text, buttonText, history}) => {
   const [open, setOpen] = React.useState(true)

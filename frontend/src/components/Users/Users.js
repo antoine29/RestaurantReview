@@ -13,11 +13,11 @@ import {
 	DeleteIcon,
 	EditIcon,
 	Button
-} from './UIComponents'
+} from '../UIComponents'
 
-import { GetUsers, DeleteUser, UpdateUser } from '../services/Users'
-import DeleteConfirmationDialog from './DeleteConfirmationDIalog'
-import UpdateUserDialog from './Users/UpdateUserDialog'
+import { GetUsers, DeleteUser, UpdateUser } from '../../services/Users'
+import DeleteConfirmationDialog from '../DeleteConfirmationDIalog'
+import UpdateUserDialog from './UpdateUserDialog'
 
 const columns = [
 	{ id: 'avatar', label: 'Avatar', maxWidth: 20, align: 'left' },

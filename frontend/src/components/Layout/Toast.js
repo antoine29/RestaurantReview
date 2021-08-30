@@ -2,7 +2,7 @@ import React from 'react'
 import {
     MuiAlert,
     Snackbar
-} from './UIComponents'
+} from '../UIComponents'
 
 const Alert = (props) => <MuiAlert elevation={6} variant="filled" {...props}  />
 const Toast = ({open, handleClose, severity, message}) => {

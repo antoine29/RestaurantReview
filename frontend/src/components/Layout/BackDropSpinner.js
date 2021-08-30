@@ -1,5 +1,5 @@
 import React from 'react'
-import { Backdrop, CircularProgress, makeStyles } from './UIComponents'
+import { Backdrop, CircularProgress, makeStyles } from '../UIComponents'
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {

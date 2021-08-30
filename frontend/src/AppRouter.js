@@ -6,7 +6,7 @@ import MainLayout from './components/Layout/MainLayout'
 import Restaurant from './components/Restaurants/Restaurant'
 import Restaurants from './components/Restaurants/Restaurants'
 import ProtectedRoute from './ProtectedRoute'
-import Users from './components/Users'
+import Users from './components/Users/Users'
 import ErrorPage from './components/ErrorPage'
 import OwnerRestaurants from './components/Restaurants/OwnerRestaurants'
 

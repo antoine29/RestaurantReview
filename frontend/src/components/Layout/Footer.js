@@ -3,7 +3,7 @@ import {
   makeStyles,
   Container
 } from '../UIComponents'
-import CopyRightLabel from '../CopyrightLabel'
+import CopyRightLabel from './CopyrightLabel'
 
 const useStyles = makeStyles((theme) => ({
   footer: {

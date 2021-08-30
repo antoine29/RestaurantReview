@@ -7,8 +7,8 @@ import {
 import TopBar from './TopBar'
 import LeftDrawer from './LeftDrawer'
 import Footer from './Footer'
-import Toast from '../Toast'
-import BackDropSpinner from '../BackDropSpinner'
+import Toast from './Toast'
+import BackDropSpinner from './BackDropSpinner'
 
 const useStyles = makeStyles((theme) => ({
   mainGrid: {
