@@ -39,7 +39,7 @@ const ProtectedRoute = ({ Component, ...props }) => {
 
   if(!checkUserAccess(user, props.path)){
     console.log(`Not allowed to go to ${props.path}`)
-    {/* <Redirect to='/error' /> */}
+    /* return(<Redirect to='/error' />) */
     return (
       <Route
       {...props}
