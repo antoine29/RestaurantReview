@@ -66,6 +66,7 @@ import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
+import CardActions from '@material-ui/core/CardActions'
 
 export {
     Avatar,
@@ -136,5 +137,6 @@ export {
     TablePagination,
     TableRow,
     DeleteIcon,
-    EditIcon
+    EditIcon,
+    CardActions
 }
