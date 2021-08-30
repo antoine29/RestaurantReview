@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { useLocation } from 'react-router-dom'
 import {
   makeStyles,
   Toolbar,
@@ -13,11 +14,12 @@ import {
   Fab,
   KeyboardArrowUpIcon,
   Zoom,
-  MenuIcon
+  MenuIcon,
+  StarRateIcon
 } from '../UIComponents'
 
 const useStyles = makeStyles((theme) => ({
-  topbar: {
+  root: {
     flexGrow: 1,
   },
   scrollTopButton: {
@@ -64,15 +66,30 @@ const ScrollTopButton = (props) => {
 
 const TopBar = (props) => {
   const classes = useStyles()
+  let location = useLocation()
+
   return (
     <React.Fragment>
       <CssBaseline />
-      <AppBar className={classes.appbar}>
+      <AppBar>
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={()=> {props.setOpenDrawer(true)}}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6">RestaurantReview</Typography>
+          <Typography variant="h6">Restaurant Review</Typography>
+          { location.pathname === '/restaurants' && 
+          <div style={{ marginLeft: 'auto'}}>
+            <IconButton
+              edge="end"
+              color="inherit"
+              onClick={()=> {
+                props.setOpenStarFilterDialog(true)
+              }}
+            >
+              <StarRateIcon />
+            </IconButton>
+          </div>
+          }
         </Toolbar>
       </AppBar>
       <Toolbar id="back-to-top-anchor" />
@@ -91,9 +108,3 @@ const TopBar = (props) => {
 }
 
 export default TopBar
-
-TopBar.propTypes = {
-  sections: PropTypes.array,
-  title: PropTypes.string,
-  setOpenDrawer: PropTypes.func
-}

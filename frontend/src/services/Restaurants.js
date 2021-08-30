@@ -2,8 +2,9 @@ import axios from 'axios'
 // ToDo: add .env file for this routes
 const baseUrl = 'http://localhost:3001'
 
-export const GetRestaurants = async () => {
-  const response = await axios.get(`${baseUrl}/api/restaurants`)
+export const GetRestaurants = async (starAverage) => {
+  const request = starAverage > -1 ? `${baseUrl}/api/restaurants/?star_average=${starAverage}` : `${baseUrl}/api/restaurants/`
+  const response = await axios.get(request)
   return response.data
 }
 

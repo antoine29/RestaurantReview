@@ -70,15 +70,14 @@ import CardActions from '@material-ui/core/CardActions'
 import Chip from '@material-ui/core/Chip'
 import CardHeader from '@material-ui/core/CardHeader'
 import { red } from '@material-ui/core/colors'
-
 import FormatListNumberedRtlIcon from '@material-ui/icons/FormatListNumberedRtl'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
-import CommentIcon from '@material-ui/icons/Comment';
-import SendIcon from '@material-ui/icons/Send';
-
-import AddCommentIcon from '@material-ui/icons/AddComment';
-import AddIcon from '@material-ui/icons/Add';
+import CommentIcon from '@material-ui/icons/Comment'
+import SendIcon from '@material-ui/icons/Send'
+import AddCommentIcon from '@material-ui/icons/AddComment'
+import AddIcon from '@material-ui/icons/Add'
+import StarRateIcon from '@material-ui/icons/StarRate'
 
 export {
     Avatar,
@@ -160,5 +159,6 @@ export {
     CardHeader,
     red,
     AddCommentIcon,
-    AddIcon
+    AddIcon,
+    StarRateIcon
 }
