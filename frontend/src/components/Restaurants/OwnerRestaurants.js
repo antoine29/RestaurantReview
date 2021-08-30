@@ -6,7 +6,8 @@ import AddRestaurantDialog from './AddRestaurantDialog'
 import {
     makeStyles,
     Button,
-    Icon
+    Icon,
+    AddIcon
 } from '../UIComponents'
 
 const useStyles = makeStyles((theme) => ({
@@ -67,7 +68,7 @@ const OwnerRestaurants = ({setLoadingModal, setToastState}) => {
               variant="contained"
               color="primary"
               className={classes.button}
-              endIcon={<Icon>send</Icon>}
+              startIcon={<AddIcon />}
               onClick={() => {setOpenAddRestaurant(true)}}
             >
               Add restaurant

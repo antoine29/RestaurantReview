@@ -77,6 +77,9 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import CommentIcon from '@material-ui/icons/Comment';
 import SendIcon from '@material-ui/icons/Send';
 
+import AddCommentIcon from '@material-ui/icons/AddComment';
+import AddIcon from '@material-ui/icons/Add';
+
 export {
     Avatar,
     Snackbar,
@@ -155,5 +158,7 @@ export {
     CommentIcon,
     SendIcon,
     CardHeader,
-    red
+    red,
+    AddCommentIcon,
+    AddIcon
 }

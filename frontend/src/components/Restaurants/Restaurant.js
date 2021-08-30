@@ -7,6 +7,7 @@ import {
 	DeleteIcon,
 	EditIcon,
 	SendIcon,
+	AddCommentIcon
 } from '../UIComponents'
 
 import RestaurantCard from './RestaurantCard';
@@ -160,7 +161,7 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 						<Button
 							variant="contained"
 							color="primary"
-							startIcon={<SendIcon />}
+							startIcon={<AddCommentIcon />}
 							onClick={() => { setOpenAddReview(true) }}
 						>
 							Add review
