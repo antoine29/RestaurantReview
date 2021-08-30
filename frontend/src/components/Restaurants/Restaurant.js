@@ -17,8 +17,8 @@ import DeleteConfirmationDialog from '../DeleteConfirmationDIalog';
 import UpdateRestaurantDialog from './UpdateRestaurantDialog';
 
 const useStyles = makeStyles((theme) => ({
-	mainGrid: {
-		marginTop: theme.spacing(3),
+	content: {
+		marginBottom: theme.spacing(3),
 	},
 }))
 
@@ -93,7 +93,6 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 	}
 
 	const updateRestaurant = restaurant => {
-		console.log('updating restaurant:', restaurant.id, restaurant)
 		const updateRestaurantCall = async () => {
 			setLoadingModal(true)
 			try {
@@ -130,7 +129,7 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 					}}
 				/>
 				<RestaurantCard restaurant={restaurant} />
-				<div>
+				<div className={classes.content}>
 					{user && isAdminView(user.role) &&
 						<>
 							<Button
@@ -161,7 +160,6 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 						<Button
 							variant="contained"
 							color="primary"
-							className={classes.button}
 							startIcon={<SendIcon />}
 							onClick={() => { setOpenAddReview(true) }}
 						>

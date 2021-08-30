@@ -19,6 +19,9 @@ import {
 } from '../UIComponents'
 
 const useStyles = makeStyles((theme) => ({
+  card: {
+    marginBottom: theme.spacing(4),
+  },
   mainFeaturedPost: {
     position: 'relative',
     backgroundColor: theme.palette.grey[800],
@@ -83,7 +86,7 @@ const RestaurantCard = ({ restaurant, ownerView, adminView }) => {
   const history = useHistory()
 
   return(
-    <Card>
+    <Card className={classes.card}>
       <CardActionArea onClick={()=>{ history.push(`/restaurants/${restaurant.id}`)}}>
         <CardMedia
           component="img"
