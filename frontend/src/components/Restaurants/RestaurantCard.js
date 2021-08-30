@@ -99,13 +99,13 @@ const RestaurantCard = ({ restaurant, ownerView, adminView }) => {
           <Typography gutterBottom variant="h5" component="h2">
             {restaurant.name}
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
+          <Rating name="read-only" value={restaurant.rating.averageStars} readOnly size="large"/>
+          <Typography variant="subtitle1" color="textSecondary" component="p">
             <RoomIcon /> {restaurant.address}
           </Typography>
           
-          <Rating name="read-only" value={restaurant.rating.averageStars} readOnly size="large"/>
 
-          <Paper className={classes.chips}>
+          <div className={classes.chips}>
             <Chip
                 icon={<CommentIcon />}
                 label={`${restaurant.rating.totalReviews} reviews`}
@@ -128,7 +128,7 @@ const RestaurantCard = ({ restaurant, ownerView, adminView }) => {
                 className={classes.chip}
             />
             }
-          </Paper>
+          </div>
 
         </CardContent>
       </CardActionArea>
