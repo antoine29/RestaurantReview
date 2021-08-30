@@ -1,6 +1,6 @@
 const restaurantsRouter = require('express').Router()
 const { GetUser } = require('../dao/users')
-const { CreateReviewResponse, GetReview, UpdateReview, CreateReview } = require('../dao/reviews')
+const { CreateReviewResponse, GetReview, UpdateReview, CreateReview, DeleteReview } = require('../dao/reviews')
 const {
 	GetRestaurants,
     GetRestaurant,
@@ -8,7 +8,8 @@ const {
 	GetRestaurantReviews,
     CreateRestaurant,
 	UpdateRestaurant,
-	DeleteRestaurant
+	DeleteRestaurant,
+	DeleteRestaurantReview
 } = require('../dao/restaurants')
 
 restaurantsRouter.get('/', async (req, res) => {
@@ -118,6 +119,44 @@ restaurantsRouter.post('/:id/reviews', async (req, res) => {
 		const updatedRestaurantReviews = existingRestaurantReviews && existingRestaurantReviews.length > 0 ? [ ...existingRestaurantReviews, savedReview._id ] : [ savedReview._id ]
 		if(updatedRestaurantRating) await UpdateRestaurant(restaurant._id, { rating: updatedRestaurantRating, reviews: updatedRestaurantReviews })
 		return res.status(200).json(savedReview)
+	}
+	catch(error){
+		return res.status(400).json({ error: error.message })
+	}
+})
+
+restaurantsRouter.delete('/:restaurantId/reviews/:reviewId', async (req, res) => {
+	try {
+		const existingUser = await GetUser(req.user.id)
+		if(existingUser.role !== 'admin' && JSON.stringify(restaurant.owner._id) !== JSON.stringify(existingUser._id)) return res.status(401).json({ error: 'Not allowed.' })
+
+		const review = await GetReview(req.params.reviewId)
+		if (!review) return res.status(404).json({ error: 'Review not found' })
+
+		const restaurant = await GetRestaurant(req.params.restaurantId)
+		if (!restaurant) return res.status(404).json({ error: 'Restaurant not found' })
+
+		let reviewOnRestaurant = false
+		restaurant.reviews.forEach(review => {
+			if(review._id === review._id) reviewOnRestaurant = true
+		})
+		if(!reviewOnRestaurant) return res.status(401).json({ error: 'Review not found in restaurant.'})
+
+		await DeleteReview(review._id)
+		await DeleteRestaurantReview(restaurant._id, review._id)
+
+		let updatedRestaurantRating = await CalculateRestaurantRating(restaurant._id)
+		if(updatedRestaurantRating===null){
+			updatedRestaurantRating = {
+				averageStars: 0,
+				maxStar: 0,
+				minStar: 0,
+				totalReviews: 0
+			}
+		}
+
+		await UpdateRestaurant(restaurant._id, { rating: updatedRestaurantRating })
+		return res.sendStatus(200)
 	}
 	catch(error){
 		return res.status(400).json({ error: error.message })

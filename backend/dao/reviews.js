@@ -19,6 +19,10 @@ const CreateReview = async (review, restaurantId, user) => {
 	return populatedReview
 }
 
+const DeleteReview = async (reviewId) => {	
+	await Review.deleteOne({_id: reviewId})
+}
+
 const CreateReviewResponse = async (userId, reviewId, response) => {	
 	const newReviewResponse = new ReviewResponse({
 		response,
@@ -45,5 +49,6 @@ module.exports = {
 	GetReview,
 	CreateReviewResponse,
 	UpdateReview,
-	CreateReview
+	CreateReview,
+	DeleteReview
 }

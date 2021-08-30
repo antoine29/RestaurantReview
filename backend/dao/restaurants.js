@@ -38,6 +38,14 @@ const CreateRestaurant = async (restaurant) => {
 	return savedPopulatedRestaurant
 }
 
+const DeleteRestaurantReview = async (restaurantId, reviewId) => {
+	const restaurant = await Restaurant.findById(restaurantId)
+	const filteredReviews = restaurant.reviews.filter(_reviewId => _reviewId !== reviewId)
+	restaurant.reviews = filteredReviews
+	await restaurant.save()
+	return restaurant
+}
+
 const GetRestaurantReviews = async (restaurantId) => {
     const reviews = await Review
 		.find({ restaurant: restaurantId})
@@ -59,7 +67,6 @@ const CalculateRestaurantRating = async (restaurantId) => {
 	]).exec()
 
 	const restaurantRating = restaurantRating_result.length > 0 ? restaurantRating_result[0] : null
-	console.log(`updated rating for restaurant ${restaurantId}:`, restaurantRating)
 	return restaurantRating
 }
 
@@ -69,10 +76,10 @@ const UpdateRestaurant = async (restaurantId, newRestaurant) => {
 	if (newRestaurant.address) existingRestaurant.address = newRestaurant.address
 	if (newRestaurant.url) existingRestaurant.url = newRestaurant.url
 	if (newRestaurant.rating){
-		if (newRestaurant.rating.averageStars) existingRestaurant.rating.averageStars = newRestaurant.rating.averageStars
-		if (newRestaurant.rating.totalReviews) existingRestaurant.rating.totalReviews = newRestaurant.rating.totalReviews
-		if (newRestaurant.rating.minStar) existingRestaurant.rating.minStar = newRestaurant.rating.minStar
-		if (newRestaurant.rating.maxStar) existingRestaurant.rating.maxStar = newRestaurant.rating.maxStar
+		if (newRestaurant.rating.averageStars || newRestaurant.rating.averageStars === 0) existingRestaurant.rating.averageStars = newRestaurant.rating.averageStars
+		if (newRestaurant.rating.totalReviews || newRestaurant.rating.totalReviews === 0) existingRestaurant.rating.totalReviews = newRestaurant.rating.totalReviews
+		if (newRestaurant.rating.minStar || newRestaurant.rating.minStar === 0) existingRestaurant.rating.minStar = newRestaurant.rating.minStar
+		if (newRestaurant.rating.maxStar || newRestaurant.rating.maxStar === 0) existingRestaurant.rating.maxStar = newRestaurant.rating.maxStar
 	}
 	if (newRestaurant.reviews) existingRestaurant.reviews = newRestaurant.reviews
 	await existingRestaurant.save()
@@ -113,5 +120,6 @@ module.exports = {
     CreateRestaurant,
 	UpdateRestaurant,
 	GetUserRestaurants,
-	DeleteRestaurant
+	DeleteRestaurant,
+	DeleteRestaurantReview
 }
