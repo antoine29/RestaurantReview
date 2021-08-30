@@ -9,6 +9,13 @@ const GetRestaurants = async () => {
 	return restaurants
 }
 
+const GetRestaurantsByStarAverage = async (starAverageFilter) => {
+	const restaurants = await Restaurant
+		.find({ "rating.averageStars": starAverageFilter})
+		.populate('owner', { role: 0 })
+	return restaurants
+}
+
 const GetRestaurant = async (restaurantId) => {
 	const restaurant = await Restaurant
 		.findById(restaurantId)
@@ -67,6 +74,7 @@ const CalculateRestaurantRating = async (restaurantId) => {
 	]).exec()
 
 	const restaurantRating = restaurantRating_result.length > 0 ? restaurantRating_result[0] : null
+	if(restaurantRating) restaurantRating.averageStars = Math.trunc(restaurantRating.averageStars)
 	return restaurantRating
 }
 
@@ -121,5 +129,6 @@ module.exports = {
 	UpdateRestaurant,
 	GetUserRestaurants,
 	DeleteRestaurant,
-	DeleteRestaurantReview
+	DeleteRestaurantReview,
+	GetRestaurantsByStarAverage
 }

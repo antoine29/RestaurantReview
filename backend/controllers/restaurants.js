@@ -3,6 +3,7 @@ const { GetUser } = require('../dao/users')
 const { CreateReviewResponse, GetReview, UpdateReview, CreateReview, DeleteReview } = require('../dao/reviews')
 const {
 	GetRestaurants,
+	GetRestaurantsByStarAverage,
     GetRestaurant,
 	CalculateRestaurantRating,
 	GetRestaurantReviews,
@@ -14,8 +15,15 @@ const {
 
 restaurantsRouter.get('/', async (req, res) => {
 	try {
-		const restaurants = await GetRestaurants()
-		return res.json(restaurants)
+		const starAverageFilter = req.query.star_average
+		if(starAverageFilter){
+			const restaurants = await GetRestaurantsByStarAverage(starAverageFilter)
+			return res.json(restaurants)
+		}
+		else{
+			const restaurants = await GetRestaurants()
+			return res.json(restaurants)
+		}
 	}
 	catch(error) {
 		return res.status(400).json({ error: error.message })
