@@ -62,6 +62,18 @@ export const CreateRestaurantReviewResponse = async (restaurantId, reviewId, res
   }
 }
 
+export const DeleteRestaurantReview = async (restaurantId, reviewId) => {
+  try{
+    const apiResponse = await axios({
+      method: 'delete',
+      url: `${baseUrl}/api/restaurants/${restaurantId}/reviews/${reviewId}`,
+    })
+  }
+  catch(error){
+    throw error.response.data;
+  }
+}
+
 export const CreateRestaurant = async restaurant => {
   try{
     const apiResponse = await axios({

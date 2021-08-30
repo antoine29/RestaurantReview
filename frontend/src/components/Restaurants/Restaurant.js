@@ -33,8 +33,8 @@ const _addReview = async (restaurantId, comment, stars, setToastState) => {
 	}
 }
 
-const ownerView = (restaurantOwnerId, signedUserId) => restaurantOwnerId === signedUserId
-const adminView = signedUserRole => signedUserRole === 'admin'
+const isOwnerView = (restaurantOwnerId, signedUserId) => restaurantOwnerId === signedUserId
+const isAdminView = signedUserRole => signedUserRole === 'admin'
 
 const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 	const classes = useStyles()
@@ -130,7 +130,7 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 					}}
 				/>
 				<RestaurantCard restaurant={restaurant} />
-				{user && adminView(user.role) &&
+				{user && isAdminView(user.role) &&
 					<div>
 						<Button
 							variant="contained"
@@ -156,7 +156,7 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 						</Button>
 					</div>
 				}
-				{restaurant.owner && user && !ownerView(restaurant.owner.id, user.id) &&
+				{restaurant.owner && user && !isOwnerView(restaurant.owner.id, user.id) &&
 					<Button
 						variant="contained"
 						color="primary"
@@ -170,10 +170,11 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 				{restaurant.reviews && restaurant.reviews.length > 0 && restaurant.reviews.map(review =>
 					<RestaurantReviewCard
 						review={review}
-						ownerView={ownerView(restaurant.owner.id, user.id)}
+						ownerView={isOwnerView(restaurant.owner.id, user.id)}
 						setLoadingModal={setLoadingModal}
 						setToastState={setToastState}
 						setReloadRestaurant={setReloadRestaurant}
+						adminView={isAdminView(user.role)}
 					/>)}
 			</>
 		)
