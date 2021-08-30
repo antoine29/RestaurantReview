@@ -7,8 +7,6 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
-	Box,
-	Typography,
 	Rating
 } from '../UIComponents'
 
@@ -28,7 +26,6 @@ const AddReviewDialog = ({ openAddReview, setOpenAddReview, addReview }) => {
 	}
 
 	return (
-
 		<Dialog open={openAddReview} onClose={handleClose} aria-labelledby="form-dialog-title">
 			<DialogTitle id="form-dialog-title">Add review</DialogTitle>
 			<DialogContent>
@@ -45,18 +42,14 @@ const AddReviewDialog = ({ openAddReview, setOpenAddReview, addReview }) => {
 					fullWidth
 					onChange={({ target }) => { setComment(target.value) }}
 				/>
-				<div>
-					<Box component="fieldset" mb={3} borderColor="transparent">
-						<Typography component="legend">Controlled</Typography>
-						<Rating
-							name="simple-controlled"
-							value={starRating}
-							onChange={(event, newValue) => {
-								setStarRating(newValue);
-							}}
-						/>
-					</Box>
-				</div>
+				<Rating
+					size="large"
+					name="simple-controlled"
+					value={starRating}
+					onChange={(event, newValue) => {
+						setStarRating(newValue);
+					}}
+				/>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={handleClose} color="primary">
