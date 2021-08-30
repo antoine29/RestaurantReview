@@ -9,8 +9,10 @@ import {
   Button,
   IconButton,
   DeleteIcon,
-  EditIcon,
-  CardActions
+  CardActions,
+  CardHeader,
+  Avatar,
+  red
 } from '../UIComponents'
 
 import DeleteConfirmationDialog from '../DeleteConfirmationDIalog'
@@ -18,14 +20,15 @@ import AddReviewResponseDialog from './AddReviewResponseDialog'
 import { CreateRestaurantReviewResponse, DeleteRestaurantReview } from '../../services/Restaurants'
 
 const useStyles = makeStyles({
-  card: {
-    display: 'flex',
+  root: {
+    maxWidth: 345,
   },
-  cardDetails: {
-    flex: 1,
+  media: {
+    height: 0,
+    paddingTop: '56.25%', // 16:9
   },
-  cardMedia: {
-    width: 160,
+  avatar: {
+    backgroundColor: red[500],
   },
 })
 
@@ -55,10 +58,10 @@ const RestaurantReviewCard = ({ review, ownerView, setLoadingModal, setToastStat
   const onDeleteReview = () => {
     const deleteReviewCall = async () => {
       setLoadingModal(true)
-      try{
+      try {
         await DeleteRestaurantReview(review.restaurant, review.id)
         setReloadRestaurant(true)
-      }catch(error){
+      } catch (error) {
         setToastState({ severity: 'error', message: 'Error deleting review.' })
       }
       setLoadingModal(false)
@@ -76,43 +79,59 @@ const RestaurantReviewCard = ({ review, ownerView, setLoadingModal, setToastStat
         sendResponse={sendResponse}
       />
       <Grid item xs={12} md={6}>
-        <Card className={classes.card}>
-          <div className={classes.cardDetails}>
-            <CardContent>
-              <Typography component="h2" variant="h5">
-                @{review.user.username}:
-              </Typography>
-              <Typography variant="subtitle1" color="textSecondary">
-                {review.createdAt}
-              </Typography>
-              <Typography variant="subtitle1" paragraph>
-                {review.comment}
-              </Typography>
-              {!!review.response &&
-                <Typography variant="subtitle1" paragraph>
-                  @{review.response.user.username}: {review.response.response}
+        <Card >
+          <CardHeader
+            avatar={
+              <Avatar aria-label="recipe" className={classes.avatar}>
+                R
+              </Avatar>
+            }
+            title={review.user.username}
+            subheader={review.createdAt}
+          />
+          <CardContent>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {review.comment}
+            </Typography>
+          </CardContent>
+
+          {!!review.response &&
+            <>
+              <CardHeader
+                avatar={
+                  <Avatar aria-label="recipe" className={classes.avatar}>
+                    R
+                  </Avatar>
+                }
+                title={review.response.user.username}
+                subheader={review.createdAt}
+              />
+              <CardContent>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {review.response.response}
                 </Typography>
-              }
-              {!review.response && ownerView &&
+              </CardContent>
+            </>
+          }
+
+          {!review.response && ownerView &&
+            <CardActions disableSpacing>
                 <Button onClick={() => {
                   setReviewIdToResponse(review.id)
                   setOpenAddResponse(true)
                 }}>
                   response
                 </Button>
-              }
-            </CardContent>
-            {adminView &&
-            <CardActions disableSpacing>
-              <IconButton aria-label="Delete review" onClick={()=>{setOpenDeleteDialog(true)}}>
-                <DeleteIcon />
-              </IconButton>
             </CardActions>
+              }
+
+          {adminView &&
+              <CardActions disableSpacing>
+                <IconButton aria-label="Delete review" onClick={() => { setOpenDeleteDialog(true) }}>
+                  <DeleteIcon />
+                </IconButton>
+              </CardActions>
             }
-          </div>
-          {/* <Hidden xsDown>
-            <CardMedia className={classes.cardMedia} image={post.image} title={post.imageTitle} />
-          </Hidden> */}
         </Card>
       </Grid>
     </>

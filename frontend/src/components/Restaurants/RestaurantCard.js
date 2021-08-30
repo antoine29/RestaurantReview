@@ -5,10 +5,17 @@ import {
   makeStyles,
   Paper,
   Typography,
-  Grid,
-  Box,
   Rating,
-  RoomIcon
+  RoomIcon,  
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Chip,
+  ArrowDownwardIcon,
+  ArrowUpwardIcon,
+  CommentIcon,
+  AnnouncementIcon,
 } from '../UIComponents'
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +52,17 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
   },
+  chips: {
+    display: 'flex',
+    justifyContent: 'left',
+    flexWrap: 'wrap',
+    listStyle: 'none',
+    padding: theme.spacing(0.5),
+    margin: 0,
+  },
+  chip: {
+    margin: theme.spacing(0.5),
+  },
 }))
 
 const ResponsedReviewsLabel = reviews => {
@@ -64,41 +82,54 @@ const RestaurantCard = ({ restaurant, ownerView, adminView }) => {
   const classes = useStyles()
   const history = useHistory()
 
-  return (
-    <Paper
-      className={classes.mainFeaturedPost}
-      style={{ backgroundImage: `url(${restaurant.url})` }}
-      onClick={()=>{ history.push(`/restaurants/${restaurant.id}`)}}>
-      {/* Increase the priority of the hero background image */}
-      {/* {<img style={{ display: 'none' }} src={post.url} alt={post.imageText} />} */}
-      {<img style={{ display: 'none' }} src={restaurant.url} />}
-      <div className={classes.overlay} />
-      <Grid container>
-        <Grid item md={6}>
-          <div className={classes.mainFeaturedPostContent}>
-            <Typography component="h1" variant="h3" color="inherit" gutterBottom>
-              <mark className={classes.highLightedText}>{restaurant.name}</mark>
-            </Typography>
-            <Typography variant="h5" color="inherit" paragraph>
-              <mark className={classes.highLightedText}> <RoomIcon /> {restaurant.address}</mark>
-            </Typography>
-          </div>
-        </Grid>
-        <Grid item>
-          <div className={classes.mainFeaturedPostContent}>
-            <Box component="fieldset" mb={3} borderColor="transparent" style={{backgroundColor: '#c0ffc8', padding: 0, color: 'black'}}>
-              <Rating name="read-only" value={restaurant.rating.averageStars} readOnly size="large"/>
-              <Typography variant="subtitle1">{restaurant.rating.totalReviews} reviews </Typography>
-              <Typography variant="subtitle1">{restaurant.rating.maxStar} max rating / {restaurant.rating.minStar} min rating </Typography>
-            </Box>
-          </div>
-        </Grid>
-        { ownerView && 
-        <Grid item style={{ backgroundColor:'black' }}>
-          Pending reviews { ResponsedReviewsLabel(restaurant.reviews)}
-        </Grid>}
-      </Grid>
-    </Paper>
+  return(
+    <Card>
+      <CardActionArea onClick={()=>{ history.push(`/restaurants/${restaurant.id}`)}}>
+        <CardMedia
+          component="img"
+          alt="Contemplative Reptile"
+          height="140"
+          image={restaurant.url}
+          title="Contemplative Reptile"
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {restaurant.name}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            <RoomIcon /> {restaurant.address}
+          </Typography>
+          
+          <Rating name="read-only" value={restaurant.rating.averageStars} readOnly size="large"/>
+
+          <Paper className={classes.chips}>
+            <Chip
+                icon={<CommentIcon />}
+                label={`${restaurant.rating.totalReviews} reviews`}
+                className={classes.chip}
+            />
+            <Chip
+                icon={<ArrowUpwardIcon />}
+                label={`best: ${restaurant.rating.maxStar}`}
+                className={classes.chip}
+            />
+            <Chip
+                icon={<ArrowDownwardIcon />}
+                label={`lowest: ${restaurant.rating.minStar}`}
+                className={classes.chip}
+            />
+            { ownerView &&
+            <Chip
+                icon={<AnnouncementIcon />}
+                label={`${ResponsedReviewsLabel(restaurant.reviews)} pending reviews`}
+                className={classes.chip}
+            />
+            }
+          </Paper>
+
+        </CardContent>
+      </CardActionArea>
+    </Card>
   )
 }
 

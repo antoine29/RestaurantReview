@@ -4,9 +4,9 @@ import { GetRestaurant, CreateRestaurantReview, DeleteRestaurant, UpdateRestaura
 import {
 	makeStyles,
 	Button,
-	Icon,
-  	DeleteIcon,
-  	EditIcon,
+	DeleteIcon,
+	EditIcon,
+	SendIcon,
 } from '../UIComponents'
 
 import RestaurantCard from './RestaurantCard';
@@ -50,12 +50,12 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 
 	const getRestaurantCall = async (restaurantId) => {
 		setLoadingModal(true)
-		try{
+		try {
 			const restaurant = await GetRestaurant(restaurantId)
 			setRestaurant(restaurant)
 			setLoadingModal(false)
 		}
-		catch(error){
+		catch (error) {
 			setToastState({ severity: 'error', message: 'Error deleting restaurant.' })
 			history.push('/restaurants')
 		}
@@ -66,13 +66,13 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 		const restaurantId = userMatcher.params.id
 		if (userMatcher.params.id) getRestaurantCall(restaurantId)
 	}, [userMatcher.params.id])
-	
+
 	useEffect(() => {
 		const restaurantId = userMatcher.params.id
 		if (reloadRestaurant && userMatcher.params.id) getRestaurantCall(restaurantId)
 		setReloadRestaurant(false)
 	}, [reloadRestaurant])
-	
+
 
 	const deleteRestaurant = () => {
 		console.log('deleting restaurant:', restaurant.id)
@@ -83,7 +83,7 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 				setLoadingModal(false)
 				history.push('/restaurants')
 			}
-			catch(error) {
+			catch (error) {
 				setToastState({ severity: 'error', message: 'Error deleting restaurant.' })
 			}
 			setLoadingModal(false)
@@ -104,7 +104,7 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 				})
 				setReloadRestaurant(true)
 			}
-			catch(error) {
+			catch (error) {
 				setToastState({ severity: 'error', message: 'Error updating restaurant.' })
 			}
 			setLoadingModal(false)
@@ -116,8 +116,8 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 	if (restaurant) {
 		return (
 			<>
-				<UpdateRestaurantDialog openUpdateRestaurant={openUpdateRestaurantDialog} setOpenUpdateRestaurant={setOpenUpdateRestaurantDialog} onUpdate={updateRestaurant} restaurant={restaurantToUpdate}/>
-				<DeleteConfirmationDialog openDeleteDialog={openDeleteDialog} setOpenDeleteDialog={setOpenDeleteDialog} onConfirmation={deleteRestaurant} deleteDialog="Delete restaurant ?"  />
+				<UpdateRestaurantDialog openUpdateRestaurant={openUpdateRestaurantDialog} setOpenUpdateRestaurant={setOpenUpdateRestaurantDialog} onUpdate={updateRestaurant} restaurant={restaurantToUpdate} />
+				<DeleteConfirmationDialog openDeleteDialog={openDeleteDialog} setOpenDeleteDialog={setOpenDeleteDialog} onConfirmation={deleteRestaurant} deleteDialog="Delete restaurant ?" />
 				<AddReviewDialog
 					openAddReview={openAddReview}
 					setOpenAddReview={setOpenAddReview}
@@ -130,43 +130,45 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 					}}
 				/>
 				<RestaurantCard restaurant={restaurant} />
-				{user && isAdminView(user.role) &&
-					<div>
-						<Button
-							variant="contained"
-							color="secondary"
-							className={classes.button}
-							startIcon={<DeleteIcon />}
-							onClick={()=>{setOpenDeleteDialog(true)}}
-						>
-							Delete
-						</Button>
-						{/* ToDo: this button seems not be working at the first click */}
+				<div>
+					{user && isAdminView(user.role) &&
+						<>
+							<Button
+								variant="contained"
+								color="secondary"
+								className={classes.button}
+								startIcon={<DeleteIcon />}
+								onClick={() => { setOpenDeleteDialog(true) }}
+							>
+								Delete
+							</Button>
+							{/* ToDo: this button seems not be working at the first click */}
+							<Button
+								variant="contained"
+								color="primary"
+								className={classes.button}
+								startIcon={<EditIcon />}
+								onClick={() => {
+									setRestaurantToUpdate({ ...restaurant })
+									setOpenUpdateRestaurantDialog(true)
+								}}
+							>
+								Edit
+							</Button>
+						</>
+					}
+					{restaurant.owner && user && !isOwnerView(restaurant.owner.id, user.id) && !isAdminView(user.role) &&
 						<Button
 							variant="contained"
 							color="primary"
 							className={classes.button}
-							startIcon={<EditIcon />}
-							onClick={()=>{
-								setRestaurantToUpdate({ ...restaurant })
-								setOpenUpdateRestaurantDialog(true)
-							}}
+							startIcon={<SendIcon />}
+							onClick={() => { setOpenAddReview(true) }}
 						>
-							Edit
+							Add review
 						</Button>
-					</div>
-				}
-				{restaurant.owner && user && !isOwnerView(restaurant.owner.id, user.id) &&
-					<Button
-						variant="contained"
-						color="primary"
-						className={classes.button}
-						endIcon={<Icon>send</Icon>}
-						onClick={() => { setOpenAddReview(true) }}
-					>
-						Add review
-					</Button>
-				}
+					}
+				</div>
 				{restaurant.reviews && restaurant.reviews.length > 0 && restaurant.reviews.map(review =>
 					<RestaurantReviewCard
 						review={review}

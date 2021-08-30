@@ -67,6 +67,15 @@ import TableRow from '@material-ui/core/TableRow'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import CardActions from '@material-ui/core/CardActions'
+import Chip from '@material-ui/core/Chip'
+import CardHeader from '@material-ui/core/CardHeader'
+import { red } from '@material-ui/core/colors'
+
+import FormatListNumberedRtlIcon from '@material-ui/icons/FormatListNumberedRtl'
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
+import CommentIcon from '@material-ui/icons/Comment';
+import SendIcon from '@material-ui/icons/Send';
 
 export {
     Avatar,
@@ -138,5 +147,13 @@ export {
     TableRow,
     DeleteIcon,
     EditIcon,
-    CardActions
+    CardActions,
+    Chip,
+    FormatListNumberedRtlIcon,
+    ArrowDownwardIcon,
+    ArrowUpwardIcon,
+    CommentIcon,
+    SendIcon,
+    CardHeader,
+    red
 }
