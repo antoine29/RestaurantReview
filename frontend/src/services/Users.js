@@ -1,6 +1,16 @@
 import axios from 'axios'
-// ToDo: add .env file for this routes
-const baseUrl = 'http://localhost:3001'
+
+const getBackednApi = () => {
+  console.log('env:', process.env.NODE_ENV)
+  console.log('env condition:', process.env.NODE_ENV === 'production')
+  console.log('env var:', process.env.REACT_APP_BACKEND_API)
+  const baseUrl = process.env.NODE_ENV === 'production' &&
+  process.env.REACT_APP_BACKEND_API ? process.env.REACT_APP_BACKEND_API : 'http://localhost:3001'
+  console.log('base url ', baseUrl)
+  return baseUrl
+}
+
+const baseUrl = getBackednApi()
 const localUserKey = 'RRUser'
 
 export const SignIn = async credentials => {

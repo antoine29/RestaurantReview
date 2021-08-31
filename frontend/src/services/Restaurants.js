@@ -1,6 +1,12 @@
 import axios from 'axios'
-// ToDo: add .env file for this routes
-const baseUrl = 'http://localhost:3001'
+
+const getBackednApi = () => {
+  const baseUrl = process.env.NODE_ENV === 'production' &&
+  process.env.REACT_APP_BACKEND_API ? process.env.REACT_APP_BACKEND_API : 'http://localhost:3001'
+  return baseUrl
+}
+
+const baseUrl = getBackednApi()
 
 export const GetRestaurants = async (starAverage) => {
   const request = starAverage > -1 ? `${baseUrl}/api/restaurants/?star_average=${starAverage}` : `${baseUrl}/api/restaurants/`
