@@ -1,0 +1,34 @@
+version: '3.5' 
+
+services: 
+  mongo: 
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    restart: unless-stopped
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+#      MONGO_INITDB_ROOT_PASSWORD: password
+    container_name: mongo_rrapp
+  backend: 
+    image: rrapp
+    #build:
+    #  context: ./backend
+    ports:
+      - 3001:3001
+    container_name: rrapp_backend
+    command: npm run --prefix backend start
+  frontend: 
+    image: rrapp
+    #build:
+    #  context: ./backend
+    ports:
+      - 5000:5000
+    container_name: rrapp_frontend
+    command: npm run --prefix backend serve_static
+  test_data: 
+    image: rrapp
+    #build:
+    #  context: ./backend
+    container_name: rrapp_test_data
+    command: npm run --prefix backend fill_test_data
