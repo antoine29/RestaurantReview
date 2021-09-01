@@ -1,24 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
 	Button,
 	TextField,
 	Dialog,
 	DialogActions,
 	DialogContent,
-	DialogContentText,
 	DialogTitle,
 	Rating
 } from '../UIComponents'
 
 const AddReviewDialog = ({ openAddReview, setOpenAddReview, addReview }) => {
-	const [comment, setComment] = useState('');
-	const [starRating, setStarRating] = useState(0);
+	const [comment, setComment] = useState('')
+	const [starRating, setStarRating] = useState(0)
 
 	const handleClose = () => {
 		setComment('')
 		setStarRating(0)
 		setOpenAddReview(false)
-	};
+	}
 
 	const onSendReview = () => {
 		handleClose(true)
@@ -29,9 +28,14 @@ const AddReviewDialog = ({ openAddReview, setOpenAddReview, addReview }) => {
 		<Dialog open={openAddReview} onClose={handleClose} aria-labelledby="form-dialog-title">
 			<DialogTitle id="form-dialog-title">Add review</DialogTitle>
 			<DialogContent>
-				<DialogContentText>
-					Do yo have any comment about this restaurant?
-				</DialogContentText>
+				<Rating
+					size="large"
+					name="simple-controlled"
+					value={starRating}
+					onChange={(event, newValue) => {
+						setStarRating(newValue)
+					}}
+				/>
 				<TextField
 					autoFocus
 					margin="dense"
@@ -41,14 +45,6 @@ const AddReviewDialog = ({ openAddReview, setOpenAddReview, addReview }) => {
 					value={comment}
 					fullWidth
 					onChange={({ target }) => { setComment(target.value) }}
-				/>
-				<Rating
-					size="large"
-					name="simple-controlled"
-					value={starRating}
-					onChange={(event, newValue) => {
-						setStarRating(newValue);
-					}}
 				/>
 			</DialogContent>
 			<DialogActions>

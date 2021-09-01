@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import { useRouteMatch, useHistory } from 'react-router-dom'
-import { GetRestaurant, CreateRestaurantReview, DeleteRestaurant, UpdateRestaurant } from '../../services/Restaurants';
+import { GetRestaurant, CreateRestaurantReview, DeleteRestaurant, UpdateRestaurant } from '../../services/Restaurants'
 import {
 	makeStyles,
 	Button,
 	DeleteIcon,
 	EditIcon,
-	SendIcon,
 	AddCommentIcon
 } from '../UIComponents'
 
-import RestaurantCard from './RestaurantCard';
-import RestaurantReviewCard from './RestaurantReviewCard';
-import AddReviewDialog from './AddReviewDialog';
+import RestaurantCard from './RestaurantCard'
+import RestaurantReviewCard from './RestaurantReviewCard'
+import AddReviewDialog from './AddReviewDialog'
 
-import DeleteConfirmationDialog from '../DeleteConfirmationDIalog';
-import UpdateRestaurantDialog from './UpdateRestaurantDialog';
+import DeleteConfirmationDialog from '../DeleteConfirmationDIalog'
+import UpdateRestaurantDialog from './UpdateRestaurantDialog'
 
 const useStyles = makeStyles((theme) => ({
 	content: {
@@ -122,11 +121,13 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 					openAddReview={openAddReview}
 					setOpenAddReview={setOpenAddReview}
 					addReview={async (comment, stars) => {
+						setLoadingModal(true)
 						const createdReview = await _addReview(userMatcher.params.id, comment, stars, setToastState)
 						if (createdReview) {
 							const updatedRestaurant = await GetRestaurant(userMatcher.params.id)
 							setRestaurant(updatedRestaurant)
 						}
+						setLoadingModal(false)
 					}}
 				/>
 				<RestaurantCard restaurant={restaurant} />
@@ -142,7 +143,6 @@ const Restaurant = ({ setToastState, setLoadingModal, user }) => {
 							>
 								Delete
 							</Button>
-							{/* ToDo: this button seems not be working at the first click */}
 							<Button
 								variant="contained"
 								color="primary"

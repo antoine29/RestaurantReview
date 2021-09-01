@@ -22,7 +22,7 @@ const sendNewRestaurant = async (restaurant, setToastState) => {
         return createdRestaurant
     }
     catch(error){
-        setToastState({severity: 'error', message: error.error})
+        setToastState({severity: 'error', message: error.message})
         return null
     }
 }
