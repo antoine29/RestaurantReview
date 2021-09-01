@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useFormik  } from 'formik'
+import * as yup from 'yup'
 import { GetStoredUser, SignUp } from '../../services/Users'
 import {
 	Avatar,
@@ -17,6 +19,25 @@ import Toast from '../Layout/Toast'
 import BackDropSpinner from '../Layout/BackDropSpinner'
 import SimpleBackDropDialog from './SimpleBackDropDialog'
 import CopyrightLabel from '../Layout/CopyrightLabel'
+
+const signUpFormValidationSchema = yup.object({
+	name: yup
+		.string('Enter your full name')
+		.min(5, 'Name should be of minimum 5 characters length')
+		.required('Name is required'),
+	email: yup
+		.string('Enter your email')
+		.email('Enter a valid email')
+		.required('Email is required'),
+	username: yup
+		.string('Enter your username')
+		.min(5, 'Username should be of minimum 5 characters length')
+		.required('Username is required'),
+	password: yup
+		.string('Enter your password')
+		.min(5, 'Password should be of minimum 5 characters length')
+		.required('Password is required'),
+})
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -64,11 +85,8 @@ const _signUp = async (name, email, username, password, setSuccesfulSignUp, setS
 }
 
 const SignUpForm = () => {
-	const classes = useStyles();
+	const classes = useStyles()
 	const history = useHistory()
-	const [name, setName] = useState('')
-	const [email, setEmail] = useState('')
-	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [loading, setLoading] = useState(false)
 	const [succesfulSignUp, setSuccesfulSignUp] = useState(false)
@@ -84,19 +102,28 @@ const SignUpForm = () => {
 
 	useEffect(() => {
 		if (succesfulSignUp) {
-			setUsername('')
-			setEmail('')
-			setPassword('')
 		}
 	}, [succesfulSignUp])
 
-	const clearForm = () => {
-		setEmail('')
-		setUsername('')
-		setPassword('')
-	}
+	const formik = useFormik({
+		initialValues: {
+		  name: '',
+		  email: '',
+		  username: '',
+		  password: '',
+		},
+		validationSchema: signUpFormValidationSchema,
+		onSubmit: (values) => {
+		  const signUpCall = async (name, email, username, password, setLoading, setSuccesfulSignUp, setShowFailedSignUpToast) => {
+			setLoading(true)
+			await _signUp(name, email, username, password, setSuccesfulSignUp, setShowFailedSignUpToast)
+			setLoading(false)
+		}
 
-	// ToDo: add proper fields validation
+		signUpCall(values.name, values.email, values.username, values.password, setLoading, setSuccesfulSignUp, setShowFailedSignUpToast)
+		},
+	  })
+
 	return (
 		<Grid container component="main" className={classes.root}>
 			<CssBaseline />
@@ -112,63 +139,54 @@ const SignUpForm = () => {
 					<Typography component="h1" variant="h5">
 						Sign up
 					</Typography>
-					<form className={classes.form} noValidate onSubmit={event => {
-						event.preventDefault()
-						const signUpCall = async (name, email, username, password, setLoading, setSuccesfulSignUp, setShowFailedSignUpToast) => {
-							setLoading(true)
-							await _signUp(name, email, username, password, setSuccesfulSignUp, setShowFailedSignUpToast)
-							setLoading(false)
-						}
-
-						signUpCall(name, email, username, password, setLoading, setSuccesfulSignUp, setShowFailedSignUpToast)
-						clearForm()
-					}}>
+					<form className={classes.form} onSubmit={formik.handleSubmit} >
 						<TextField
-							value={name}
 							variant="outlined"
 							margin="normal"
-							required
 							fullWidth
 							id="name"
 							label="Name"
-							name="name"
-							onChange={({ target }) => { setName(target.value) }}
+							value={formik.values.name}
+							onChange={formik.handleChange}
+							error={formik.touched.name && Boolean(formik.errors.name)}
+							helperText={formik.touched.name && formik.errors.name}
 						/>
 						<TextField
-							value={email}
 							variant="outlined"
 							margin="normal"
-							required
 							fullWidth
 							id="email"
 							label="Email Address"
 							name="email"
-							autoComplete="email"
-							onChange={({ target }) => { setEmail(target.value) }}
+							value={formik.values.email}
+							onChange={formik.handleChange}
+							error={formik.touched.email && Boolean(formik.errors.email)}
+							helperText={formik.touched.email && formik.errors.email}
 						/>
 						<TextField
-							value={username}
 							variant="outlined"
 							margin="normal"
-							required
 							fullWidth
 							id="email"
 							label="User Name"
 							name="username"
-							onChange={({ target }) => { setUsername(target.value) }}
+							value={formik.values.username}
+							onChange={formik.handleChange}
+							error={formik.touched.username && Boolean(formik.errors.username)}
+							helperText={formik.touched.username && formik.errors.username}
 						/>
 						<TextField
-							value={password}
 							variant="outlined"
 							margin="normal"
-							required
 							fullWidth
-							name="password"
+							id="password"
 							label="Password"
 							type="password"
-							id="password"
-							autoComplete="current-password"
-							onChange={({ target }) => { setPassword(target.value) }}
+							name="password"
+							value={formik.values.password}
+							onChange={formik.handleChange}
+							error={formik.touched.password && Boolean(formik.errors.password)}
+							helperText={formik.touched.password && formik.errors.password}
 						/>
 						<Button
 							type="submit"
@@ -186,7 +204,7 @@ const SignUpForm = () => {
 				</div>
 			</Grid>
 		</Grid>
-	);
+	)
 }
 
 export default SignUpForm
