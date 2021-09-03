@@ -4,7 +4,7 @@ const { GetUserRestaurants } = require('../dao/restaurants')
 
 usersRouter.get('/', async (request, response) => {
 	const user = request.user
-	if(user.role !== 'admin') return res.status(403).json({error: 'Admin role restricted operation.'})
+	if(user.role !== 'admin') return response.status(403).json({error: 'Admin role restricted operation.'})
 	const users = await GetUsers()
 	response.json(users.map(u => u.toJSON()))
 })
@@ -23,7 +23,7 @@ usersRouter.get('/:id', async (request, response) => {
 usersRouter.delete('/:id', async (request, response) => {
 	try{
 		const user = request.user
-		if(user.role !== 'admin') return res.status(403).json({error: 'Admin role restricted operation.'})
+		if(user.role !== 'admin') return response.status(403).json({error: 'Admin role restricted operation.'})
 
 		const userId = request.params.id
 		const existingUser = await GetUser(userId)
@@ -40,7 +40,7 @@ usersRouter.delete('/:id', async (request, response) => {
 usersRouter.patch('/:id', async (request, response) => {
 	try{
 		const user = request.user
-		if(user.role !== 'admin') return res.status(403).json({error: 'Admin role restricted operation.'})
+		if(user.role !== 'admin') return response.status(403).json({error: 'Admin role restricted operation.'})
 
 		const userId = request.params.id
 		const existingUser = await GetUser(userId)

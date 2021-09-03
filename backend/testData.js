@@ -106,18 +106,18 @@ const insertRestaurants = async () => {
     createdRests['rest10'] = createdRest10
 
     const rest11 = new Restaurant({
-        name: "rest11",
-        address: "rest11",
-        url: "rest1",
+        name: "Spice Symphony",
+        address: "150 E 50th St Between Lexington & 3rd Avenue, New York City, NY 10022-9500",
+        url: "https://media-cdn.tripadvisor.com/media/photo-w/10/e3/88/03/olio-e-piu-patio.jpg",
         owner: createdOwners['owner1']._id
     })
     const createdRest11 = await rest11.save()
     console.log(createdRest11)
 
     const rest20 = new Restaurant({
-        name: "rest20",
-        address: "rest20",
-        url: "rest20",
+        name: "Olio e Piú",
+        address: "3 Greenwich Ave, New York City, NY 10014-3543",
+        url: "https://media-cdn.tripadvisor.com/media/photo-w/10/e3/88/03/olio-e-piu-patio.jpg",
         owner: createdOwners['owner2']._id,
         rating: {
             averageStars: 1,
@@ -131,9 +131,9 @@ const insertRestaurants = async () => {
     createdRests['rest20'] = createdRest20
 
     const rest21 = new Restaurant({
-        name: "rest21",
-        address: "rest21",
-        url: "rest21",
+        name: "Joanne",
+        address: "70 W 68th St, New York City, NY 10023-6044",
+        url: "https://media-cdn.tripadvisor.com/media/photo-w/04/88/ea/1b/joanne.jpg",
         owner: createdOwners['owner2']._id
     })
     const createdRest21 = await rest21.save()

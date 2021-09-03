@@ -135,14 +135,14 @@ restaurantsRouter.post('/:id/reviews', async (req, res) => {
 
 restaurantsRouter.delete('/:restaurantId/reviews/:reviewId', async (req, res) => {
 	try {
+		const restaurant = await GetRestaurant(req.params.restaurantId)
+		if (!restaurant) return res.status(404).json({ error: 'Restaurant not found' })
+
 		const existingUser = await GetUser(req.user.id)
 		if(existingUser.role !== 'admin' && JSON.stringify(restaurant.owner._id) !== JSON.stringify(existingUser._id)) return res.status(401).json({ error: 'Not allowed.' })
 
 		const review = await GetReview(req.params.reviewId)
 		if (!review) return res.status(404).json({ error: 'Review not found' })
-
-		const restaurant = await GetRestaurant(req.params.restaurantId)
-		if (!restaurant) return res.status(404).json({ error: 'Restaurant not found' })
 
 		let reviewOnRestaurant = false
 		restaurant.reviews.forEach(review => {
