@@ -172,6 +172,7 @@ restaurantsRouter.delete('/:restaurantId/reviews/:reviewId', async (req, res) =>
 })
 
 restaurantsRouter.post('/:restaurantId/reviews/:reviewId/response', async (req, res) => {    
+	//todo; add validation to make sending responses available for the actual owner of the restaurant
 	try {
         const existingUser = await GetUser(req.user.id)
         if(!existingUser) return res.status(401).json({ error: 'User not found.'})
